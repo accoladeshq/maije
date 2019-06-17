@@ -1,8 +1,7 @@
 ﻿using Accolades.Maije.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Accolades.Maije.Tests.Commons.Entities
+namespace Accolades.Maije.Infrastructure.Tests.Entities
 {
     public class Test : IIdentity<int>
     {
@@ -18,7 +17,7 @@ namespace Accolades.Maije.Tests.Commons.Entities
         /// <summary>
         /// Initialize a new <see cref="Test" />
         /// </summary>
-        public Test() : this(-1)
+        public Test() : this(0)
         {
 
         }
@@ -26,7 +25,7 @@ namespace Accolades.Maije.Tests.Commons.Entities
         /// <summary>
         /// Gets the identifier
         /// </summary>
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
         public int Id { get; private set; }
     }
 }

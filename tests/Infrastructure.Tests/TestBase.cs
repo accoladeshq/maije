@@ -1,8 +1,8 @@
-using Accolades.Maije.Tests.Commons.Helpers;
+using Accolades.Maije.Infrastructure.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Accolades.Maije.Tests.Commons
+namespace Accolades.Maije.Infrastructure.Tests
 {
     public class TestBase
     {

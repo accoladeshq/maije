@@ -1,9 +1,10 @@
-﻿using Accolades.Maije.Tests.Commons.Entities;
+﻿using Accolades.Maije.Infrastructure.Data;
+using Accolades.Maije.Infrastructure.Tests.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Accolades.Maije.Tests.Commons.Data
+namespace Accolades.Maije.Infrastructure.Tests.Data
 {
-    internal class TestDbContext : DbContext
+    internal class TestDbContext : MaijeDbContext
     {
         /// <summary>
         /// Gets the tests items

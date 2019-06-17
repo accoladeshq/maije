@@ -1,23 +1,13 @@
 ﻿using Accolades.Maije.Infrastructure.Exceptions;
-using Accolades.Maije.Infrastructure.Tests.Commons;
-using Accolades.Maije.Tests.Commons;
+using Accolades.Maije.Infrastructure.Tests.Helpers;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Threading.Tasks;
 
 namespace Accolades.Maije.Infrastructure.Tests
 {
-    [TestClass]
-    public class RepositoryBaseTests : TestBase
+    public partial class RepositoryBaseTests
     {
-        [ExpectedException(typeof(ArgumentNullException))]
-        [TestMethod]
-        public void Should_RaiseException_When_DbContextIsNull()
-        {
-            new TestRepository(null);
-        }
-
         [TestMethod]
         public async Task Should_ReturnTestList_When_QueryDbSet()
         {
@@ -33,7 +23,7 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            var item = await repository.GetItemByIdAsync(1);
+            var item = await repository.GetItemByIdAsync(DatabaseHelper.MaxTestId);
 
             item.Should().NotBeNull();
         }
@@ -44,16 +34,7 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            await repository.GetItemByIdAsync(9999);
-        }
-
-        /// <summary>
-        /// Get the default test repository
-        /// </summary>
-        /// <returns></returns>
-        private TestRepository GetDefaultRepository()
-        {
-            return new TestRepository(DbContext);
+            await repository.GetItemByIdAsync(DatabaseHelper.MaxTestId + 1);
         }
     }
 }

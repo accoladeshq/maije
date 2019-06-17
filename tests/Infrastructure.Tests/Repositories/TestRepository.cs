@@ -1,7 +1,7 @@
-﻿using Accolades.Maije.Tests.Commons.Entities;
+﻿using Accolades.Maije.Infrastructure.Tests.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Accolades.Maije.Infrastructure.Tests.Commons
+namespace Accolades.Maije.Infrastructure.Tests.Repositories
 {
     internal class TestRepository : RepositoryBase<Test, int>
     {

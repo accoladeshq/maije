@@ -11,12 +11,21 @@ namespace Accolades.Maije.Infrastructure
         where TEntity : class, IIdentity<TIdentifier>
         where TIdentifier : IEquatable<TIdentifier>
     {
+        /// <summary>
+        /// The db set of this repository
+        /// </summary>
         private readonly DbSet<TEntity> _dbSet;
 
+        /// <summary>
+        /// Initialize a new <see cref="RepositoryBase{TEntity, TIdentifier}"/>
+        /// </summary>
+        /// <param name="databaseContext">The database context</param>
         public RepositoryBase(DbContext databaseContext)
         {
             if (databaseContext == null) throw new ArgumentNullException(nameof(databaseContext));
 
+            // We don't give access to the data context to prevent usage of SaveChanges() and other stuff
+            // So we only store DbSet
             _dbSet = databaseContext.Set<TEntity>();
         }
 
@@ -44,6 +53,18 @@ namespace Accolades.Maije.Infrastructure
             }
 
             return entity;
+        }
+
+        /// <summary>
+        /// Add an entity
+        /// </summary>
+        /// <param name="entityToCreate">The entity to add</param>
+        /// <returns>The new entity identifier</returns>
+        public async Task<TIdentifier> AddAsync(TEntity entityToCreate)
+        {
+            var entry = await _dbSet.AddAsync(entityToCreate);
+            
+            return entry.Entity.Id;
         }
     }
 }
