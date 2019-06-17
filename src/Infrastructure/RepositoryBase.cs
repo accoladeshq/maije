@@ -1,8 +1,10 @@
 ﻿using Accolades.Maije.Domain.Entities;
+using Accolades.Maije.Domain.Entities.Commons;
 using Accolades.Maije.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -16,7 +18,7 @@ namespace Accolades.Maije.Infrastructure
         /// <summary>
         /// The db set of this repository
         /// </summary>
-        private readonly DbSet<TEntity> _dbSet;
+        protected readonly DbSet<TEntity> DbSet;
 
         /// <summary>
         /// Initialize a new <see cref="RepositoryBase{TEntity, TIdentifier}"/>
@@ -28,7 +30,7 @@ namespace Accolades.Maije.Infrastructure
 
             // We don't give access to the data context to prevent usage of SaveChanges() and other stuff
             // So we only store DbSet
-            _dbSet = databaseContext.Set<TEntity>();
+            DbSet = databaseContext.Set<TEntity>();
         }
 
         /// <summary>
@@ -37,7 +39,7 @@ namespace Accolades.Maije.Infrastructure
         /// <returns>Return all items from the database</returns>
         public async Task<IEnumerable<TEntity>> GetItemsAsync()
         {
-            return await _dbSet.ToListAsync().ConfigureAwait(false);
+            return await GetItemsQuery(false).ToListAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace Accolades.Maije.Infrastructure
         /// <returns></returns>
         public async Task<TEntity> GetItemByIdAsync(TIdentifier identifier)
         {
-            var entity =  await _dbSet.FirstOrDefaultAsync(e => e.Id.Equals(identifier)).ConfigureAwait(false);
+            var entity =  await GetByIdQuery(identifier, false).FirstOrDefaultAsync().ConfigureAwait(false);
 
             if(entity == null)
             {
@@ -64,7 +66,7 @@ namespace Accolades.Maije.Infrastructure
         /// <returns>The new entity identifier</returns>
         public async Task<TIdentifier> AddAsync(TEntity entityToCreate)
         {
-            var entry = await _dbSet.AddAsync(entityToCreate);
+            var entry = await DbSet.AddAsync(entityToCreate).ConfigureAwait(false);
             
             return entry.Entity.Id;
         }
@@ -74,28 +76,56 @@ namespace Accolades.Maije.Infrastructure
         /// </summary>
         /// <param name="identifier">The identifier to delete</param>
         /// <returns></returns>
-        public Task DeleteAsync(TIdentifier identifier)
+        public virtual Task DeleteAsync(TIdentifier identifier)
         {
             var entityToRemove = CreateDeleteEntity(identifier);
 
-            _dbSet.Remove(entityToRemove);
+            DbSet.Remove(entityToRemove);
 
             return Task.CompletedTask;
         }
+        
+        /// <summary>
+        /// Get the by identifier query
+        /// </summary>
+        /// <param name="identifier">The entity identifier</param>
+        /// <param name="trackable">If the entity is trackable</param>
+        /// <returns></returns>
+        protected virtual IQueryable<TEntity> GetByIdQuery(TIdentifier identifier, bool trackable)
+        {
+            IQueryable<TEntity> query = null;
+
+            if (trackable)
+                query = DbSet.Where(e => e.Id.Equals(identifier));
+            else
+                query = DbSet.AsNoTracking().Where(e => e.Id.Equals(identifier));
+
+            return query;
+        }
 
         /// <summary>
-        /// The constructor delegate
+        /// Gets the items query
         /// </summary>
-        /// <param name="args">Arguments</param>
+        /// <param name="trackable"></param>
         /// <returns></returns>
-        private delegate TEntity ConstructorDelegate(TIdentifier args);
+        protected virtual IQueryable<TEntity> GetItemsQuery(bool trackable)
+        {
+            IQueryable<TEntity> query = null;
+
+            if (trackable)
+                query = DbSet;
+            else
+                query = DbSet.AsNoTracking();
+
+            return query;
+        }
 
         /// <summary>
         /// Create an entity with only it's identifier
         /// </summary>
         /// <param name="id">The entity identifier</param>
         /// <returns></returns>
-        private TEntity CreateDeleteEntity(TIdentifier id)
+        protected TEntity CreateDeleteEntity(TIdentifier id)
         {
             var entityType = typeof(TEntity);
 
@@ -116,5 +146,12 @@ namespace Accolades.Maije.Infrastructure
 
             return c(id);
         }
+
+        /// <summary>
+        /// The constructor delegate
+        /// </summary>
+        /// <param name="args">Arguments</param>
+        /// <returns></returns>
+        private delegate TEntity ConstructorDelegate(TIdentifier args);
     }
 }

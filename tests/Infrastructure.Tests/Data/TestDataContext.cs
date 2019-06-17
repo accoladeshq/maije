@@ -12,6 +12,11 @@ namespace Accolades.Maije.Infrastructure.Tests.Data
         public DbSet<Test> Tests { get; private set; }
 
         /// <summary>
+        /// Gets the activate tests
+        /// </summary>
+        public DbSet<ActivableTest> ActivableTests { get; private set; }
+
+        /// <summary>
         /// Occurs during database context configuration
         /// </summary>
         /// <param name="optionsBuilder">The database context options builder</param>
