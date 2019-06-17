@@ -3,6 +3,8 @@ using Accolades.Maije.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Accolades.Maije.Infrastructure
@@ -65,6 +67,54 @@ namespace Accolades.Maije.Infrastructure
             var entry = await _dbSet.AddAsync(entityToCreate);
             
             return entry.Entity.Id;
+        }
+
+        /// <summary>
+        /// Delete an entity asynchronously
+        /// </summary>
+        /// <param name="identifier">The identifier to delete</param>
+        /// <returns></returns>
+        public Task DeleteAsync(TIdentifier identifier)
+        {
+            var entityToRemove = CreateDeleteEntity(identifier);
+
+            _dbSet.Remove(entityToRemove);
+
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// The constructor delegate
+        /// </summary>
+        /// <param name="args">Arguments</param>
+        /// <returns></returns>
+        private delegate TEntity ConstructorDelegate(TIdentifier args);
+
+        /// <summary>
+        /// Create an entity with only it's identifier
+        /// </summary>
+        /// <param name="id">The entity identifier</param>
+        /// <returns></returns>
+        private TEntity CreateDeleteEntity(TIdentifier id)
+        {
+            var entityType = typeof(TEntity);
+
+            // Get the constructor info for these parameters
+            var constructorInfo = entityType.GetConstructor(BindingFlags.CreateInstance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, new Type[] { typeof(TIdentifier) }, null);
+
+            if (constructorInfo == null)
+            {
+                throw new InfrastructureException($"You need to have a constructor with only {typeof(TIdentifier)} as parameter");
+            }
+
+            var paramExpr = Expression.Parameter(typeof(TIdentifier));
+            
+            var body = Expression.New(constructorInfo, paramExpr);
+
+            var constructor = Expression.Lambda<ConstructorDelegate>(body, paramExpr);
+            var c = constructor.Compile();
+
+            return c(id);
         }
     }
 }
