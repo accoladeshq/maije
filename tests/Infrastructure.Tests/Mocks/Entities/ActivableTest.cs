@@ -1,16 +1,15 @@
 ﻿using Accolades.Maije.Domain.Entities;
 using Accolades.Maije.Domain.Entities.Commons;
-using System;
 
 namespace Accolades.Maije.Infrastructure.Tests.Entities
 {
-    public class ActivableTest : IIdentity<Guid>, IDeactivatable
+    public class ActivableTest : IIdentity<int>, IDeactivatable
     {
         /// <summary>
         /// Initialize a new <see cref="ActivableTest"/>
         /// </summary>
         /// <param name="id">The entity identifier</param>
-        public ActivableTest(Guid id)
+        public ActivableTest(int id)
         {
             Id = id;
         }
@@ -18,7 +17,7 @@ namespace Accolades.Maije.Infrastructure.Tests.Entities
         /// <summary>
         /// Initialize a new <see cref="ActivableTest"/>
         /// </summary>
-        public ActivableTest() : this(Guid.Empty)
+        public ActivableTest() : this(0)
         {
         }
 
@@ -30,6 +29,6 @@ namespace Accolades.Maije.Infrastructure.Tests.Entities
         /// <summary>
         /// Gets the entity identifier
         /// </summary>
-        public Guid Id { get; private set; }
+        public int Id { get; private set; }
     }
 }

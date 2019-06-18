@@ -45,7 +45,19 @@ namespace Accolades.Maije.Infrastructure
         {
             var query = base.GetByIdQuery(identifier, trackable);
 
-            return query.Where(e => !e.IsActive);
+            return query.Where(e => e.IsActive);
+        }
+
+        /// <summary>
+        /// Gets the entities query
+        /// </summary>
+        /// <param name="trackable">If we need to track the return entities</param>
+        /// <returns></returns>
+        protected override IQueryable<TEntity> GetItemsQuery(bool trackable)
+        {
+            var query = base.GetItemsQuery(trackable);
+
+            return query.Where(e => e.IsActive);
         }
     }
 }

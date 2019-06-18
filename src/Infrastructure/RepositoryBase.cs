@@ -1,5 +1,4 @@
 ﻿using Accolades.Maije.Domain.Entities;
-using Accolades.Maije.Domain.Entities.Commons;
 using Accolades.Maije.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -110,7 +109,7 @@ namespace Accolades.Maije.Infrastructure
         /// <returns></returns>
         protected virtual IQueryable<TEntity> GetItemsQuery(bool trackable)
         {
-            IQueryable<TEntity> query = null;
+            IQueryable<TEntity> query;
 
             if (trackable)
                 query = DbSet;

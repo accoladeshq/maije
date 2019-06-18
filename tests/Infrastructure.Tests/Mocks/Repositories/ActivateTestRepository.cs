@@ -4,7 +4,7 @@ using System;
 
 namespace Accolades.Maije.Infrastructure.Tests.Repositories
 {
-    public class ActivateTestRepository : DeactivatableRepositoryBase<ActivableTest, Guid>
+    public class ActivateTestRepository : DeactivatableRepositoryBase<ActivableTest, int>
     {
         /// <summary>
         /// Initialize a new <see cref="ActivateTestRepository"/>

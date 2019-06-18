@@ -1,12 +1,12 @@
 ﻿using Accolades.Maije.Infrastructure.Exceptions;
-using Accolades.Maije.Infrastructure.Tests.Helpers;
+using Accolades.Maije.Infrastructure.Tests.Extensions;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 
 namespace Accolades.Maije.Infrastructure.Tests
 {
-    public partial class RepositoryBaseTests
+    public partial class DeactivatableRepositoryBaseTests
     {
         [TestMethod]
         public async Task Should_ReturnTestList_When_QueryDbSet()
@@ -15,7 +15,7 @@ namespace Accolades.Maije.Infrastructure.Tests
 
             var items = await repository.GetItemsAsync();
 
-            items.Should().HaveCountGreaterThan(0);
+            items.Should().HaveCount(Snapshot.ActivableTests.ActivateCount());
         }
 
         [TestMethod]
@@ -23,7 +23,7 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            var item = await repository.GetItemByIdAsync(DatabaseHelper.MaxTestId);
+            var item = await repository.GetItemByIdAsync(Snapshot.ActivableTests.GetActivatedId());
 
             item.Should().NotBeNull();
         }
@@ -34,7 +34,16 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            await repository.GetItemByIdAsync(DatabaseHelper.MaxTestId + 1);
+            await repository.GetItemByIdAsync(Snapshot.ActivableTests.GetNonExistingId());
+        }
+
+        [ExpectedException(typeof(InfrastructureException))]
+        [TestMethod]
+        public async Task Should_RaiseException_When_IdExistsButNotActive()
+        {
+            var repository = GetDefaultRepository();
+
+            await repository.GetItemByIdAsync(Snapshot.ActivableTests.GetDeactivatedId());
         }
     }
 }

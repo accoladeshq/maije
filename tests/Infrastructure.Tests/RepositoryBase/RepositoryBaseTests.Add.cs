@@ -1,10 +1,10 @@
 ﻿using Accolades.Maije.Infrastructure.Exceptions;
 using Accolades.Maije.Infrastructure.Tests.Entities;
-using Accolades.Maije.Infrastructure.Tests.Helpers;
-using Accolades.Maije.Infrastructure.Tests.Repositories;
+using Accolades.Maije.Infrastructure.Tests.Extensions;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Accolades.Maije.Infrastructure.Tests
@@ -20,9 +20,12 @@ namespace Accolades.Maije.Infrastructure.Tests
             var newTest = new Test();
             await repository.AddAsync(newTest);
 
-            var nbOfEntityAdd = DbContext.SaveChanges();
+            var added = DbContext.ChangeTracker.Entries().First(e => e.Entity.Equals(newTest)).State == EntityState.Added;
+
+            var nbOfEntityAdd = DbContext.SaveChanges();            
 
             nbOfEntityAdd.Should().Be(1);
+            added.Should().BeTrue();
         }
 
         [ExpectedException(typeof(InfrastructureException))]
@@ -31,7 +34,7 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            var newTest = new Test(DatabaseHelper.MaxTestId);
+            var newTest = new Test(Snapshot.Tests.GetExistingId());
             await repository.AddAsync(newTest);
 
             await DbContext.SaveChangesAsync();
@@ -43,7 +46,7 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            var newTest = new Test(DatabaseHelper.MaxTestId);
+            var newTest = new Test(Snapshot.Tests.GetExistingId());
             await repository.AddAsync(newTest);
 
             DbContext.SaveChanges();
