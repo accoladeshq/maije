@@ -1,4 +1,5 @@
-﻿using Accolades.Maije.Domain.Entities;
+﻿using Accolades.Maije.Crosscutting.Extensions;
+using Accolades.Maije.Domain.Entities;
 using Accolades.Maije.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -46,11 +47,22 @@ namespace Accolades.Maije.Infrastructure
         /// </summary>
         /// <param name="identifier">The item identifier</param>
         /// <returns></returns>
-        public async Task<TEntity> GetItemByIdAsync(TIdentifier identifier)
+        public Task<TEntity> GetItemByIdAsync(TIdentifier identifier)
         {
-            var entity =  await GetByIdQuery(identifier, false).FirstOrDefaultAsync().ConfigureAwait(false);
+            return GetItemByIdAsync(identifier, false);
+        }
 
-            if(entity == null)
+        /// <summary>
+        /// Gets item by it's identifier
+        /// </summary>
+        /// <param name="identifier">The entity identifier</param>
+        /// <param name="trackable">If the entity is tracked by ORM</param>
+        /// <returns></returns>
+        public async Task<TEntity> GetItemByIdAsync(TIdentifier identifier, bool trackable)
+        {
+            var entity = await GetByIdQuery(identifier, trackable).FirstOrDefaultAsync().ConfigureAwait(false);
+
+            if (entity == null)
             {
                 throw new InfrastructureException($"Cannot find entity of type {typeof(TEntity)} with identifier {identifier}");
             }
@@ -68,6 +80,18 @@ namespace Accolades.Maije.Infrastructure
             var entry = await DbSet.AddAsync(entityToCreate).ConfigureAwait(false);
             
             return entry.Entity.Id;
+        }
+
+        /// <summary>
+        /// Update an entity
+        /// </summary>
+        /// <param name="entityToUpdate">The entity to update.</param>
+        /// <returns></returns>
+        public Task<TEntity> UpdateAsync(TEntity entityToUpdate)
+        {
+            var entry = DbSet.Update(entityToUpdate);
+
+            return Task.FromResult(entry.Entity);
         }
 
         /// <summary>
@@ -97,7 +121,7 @@ namespace Accolades.Maije.Infrastructure
             if (trackable)
                 query = DbSet.Where(e => e.Id.Equals(identifier));
             else
-                query = DbSet.AsNoTracking().Where(e => e.Id.Equals(identifier));
+                query = DbSet.Where(e => e.Id.Equals(identifier)).AsNoTracking();
 
             return query;
         }

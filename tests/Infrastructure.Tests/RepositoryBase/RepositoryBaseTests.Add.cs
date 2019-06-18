@@ -34,7 +34,7 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            var newTest = new Test(Snapshot.Tests.GetExistingId());
+            var newTest = GetTestWithExistingId();
             await repository.AddAsync(newTest);
 
             await DbContext.SaveChangesAsync();
@@ -46,10 +46,19 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            var newTest = new Test(Snapshot.Tests.GetExistingId());
+            var newTest = GetTestWithExistingId();
             await repository.AddAsync(newTest);
 
             DbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Gets a test with an existing identifier
+        /// </summary>
+        /// <returns></returns>
+        private Test GetTestWithExistingId()
+        {
+            return new Test(Snapshot.Tests.GetExistingId(), "Random Name");
         }
     }
 }
