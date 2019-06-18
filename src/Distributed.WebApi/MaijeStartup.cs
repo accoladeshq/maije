@@ -4,6 +4,8 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Accolades.Maije.Distributed.WebApi
@@ -19,21 +21,16 @@ namespace Accolades.Maije.Distributed.WebApi
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
-                .Where(t => t.Name.EndsWith("Repository"))
-                .AsImplementedInterfaces();
+            var scanAssemblies = GetResourceAssemblies().ToArray();
 
-            builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
-                .Where(t => typeof(IMaijeDbContext).IsAssignableFrom(t))
+            builder.RegisterAssemblyTypes(scanAssemblies)
+                .Where(t => t.Name.EndsWith("Repository") || typeof(IMaijeDbContext).IsAssignableFrom(t))
                 .AsImplementedInterfaces();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             ConfigureContainer(services);
 
-            // Register dependencies, populate the services from
-            // the collection, and build the container.
-            //
             // Note that Populate is basically a foreach to add things
             // into Autofac that are in the collection. If you register
             // things in Autofac BEFORE Populate then the stuff in the
@@ -42,7 +39,6 @@ namespace Accolades.Maije.Distributed.WebApi
             // in the ServiceCollection..
             builder.Populate(services);
 
-            // Create the IServiceProvider based on the container.
             return new AutofacServiceProvider(builder.Build());
         }
 
@@ -51,5 +47,14 @@ namespace Accolades.Maije.Distributed.WebApi
         /// </summary>
         /// <param name="services"></param>
         protected abstract void ConfigureContainer(IServiceCollection services);
+
+        /// <summary>
+        /// Gets the resource assemblies to register app resources
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IEnumerable<Assembly> GetResourceAssemblies()
+        {
+            yield return Assembly.GetEntryAssembly();
+        }
     }
 }
