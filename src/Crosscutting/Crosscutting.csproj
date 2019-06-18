@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Accolades.Maije.Crosscutting</AssemblyName>
+    <RootNamespace>Accolades.Maije.Crosscutting</RootNamespace>
+  </PropertyGroup>
+
+</Project>
