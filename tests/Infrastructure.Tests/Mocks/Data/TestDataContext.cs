@@ -7,6 +7,22 @@ namespace Accolades.Maije.Infrastructure.Tests.Data
     internal class TestDbContext : MaijeDbContext
     {
         /// <summary>
+        /// Initialize a new <see cref="TestDbContext"/>
+        /// </summary>
+        /// <param name="options">The database context options</param>
+        public TestDbContext(DbContextOptions options) : base(options)
+        {
+        }
+
+        /// <summary>
+        /// Initialize a new <see cref="TestDbContext"/>
+        /// </summary>
+        public TestDbContext()
+        {
+
+        }
+
+        /// <summary>
         /// Gets the tests items
         /// </summary>
         public DbSet<Test> Tests { get; private set; }

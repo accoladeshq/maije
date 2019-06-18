@@ -1,5 +1,4 @@
-﻿using Accolades.Maije.Crosscutting.Extensions;
-using Accolades.Maije.Domain.Entities;
+﻿using Accolades.Maije.Domain.Entities;
 using Accolades.Maije.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
