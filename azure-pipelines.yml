@@ -16,23 +16,25 @@ variables:
 
 steps:
 - task: UseDotNet@2
+  displayName: Verify .NET Version
   inputs:
     packageType: 'sdk'
     version: '2.2.300'
 
-- task: NuGetToolInstaller@0
-
 - task: DotNetCoreCLI@2
+  displayName: Restore dependencies
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
+  displayName: Build library
   inputs:
     command: 'build'
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
+  displayName: Run tests
   inputs:
     command: 'test'
     projects: '**/*.Tests.csproj'
