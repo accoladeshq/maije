@@ -1,13 +1,31 @@
-﻿using Accolades.Maije.Infrastructure.Exceptions;
+﻿using Accolades.Maije.Domain.Contracts;
+using Accolades.Maije.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Accolades.Maije.Infrastructure.Data
 {
-    public abstract class MaijeDbContext : DbContext
+    public abstract class MaijeDbContext : DbContext, IMaijeDbContext
     {
+        /// <summary>
+        /// Initialize a new <see cref="MaijeDbContext"/>
+        /// </summary>
+        /// <param name="options">The data context options</param>
+        public MaijeDbContext(DbContextOptions options) : base(options)
+        {
+        }
+
+        /// <summary>
+        /// Initialize a new <see cref="MaijeDbContext"/>
+        /// </summary>
+        protected MaijeDbContext()
+        {
+        }
+
         /// <summary>
         /// Save the current changes
         /// </summary>
@@ -43,6 +61,16 @@ namespace Accolades.Maije.Infrastructure.Data
             {
                 throw new InfrastructureException(e.Message, e);
             }
+        }
+
+        /// <summary>
+        /// Gets the data set for an entity
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <returns></returns>
+        IEnumerable<TEntity> IMaijeDbContext.Set<TEntity>()
+        {
+            return Set<TEntity>();
         }
     }
 }

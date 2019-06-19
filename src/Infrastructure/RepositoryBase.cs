@@ -1,4 +1,4 @@
-﻿using Accolades.Maije.Crosscutting.Extensions;
+﻿using Accolades.Maije.Domain.Contracts;
 using Accolades.Maije.Domain.Entities;
 using Accolades.Maije.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Accolades.Maije.Infrastructure
 {
-    public abstract class RepositoryBase<TEntity, TIdentifier>
+    public class RepositoryBase<TEntity, TIdentifier> : IRepositoryBase<TEntity, TIdentifier>
         where TEntity : class, IIdentity<TIdentifier>
         where TIdentifier : IEquatable<TIdentifier>
     {
@@ -24,13 +24,19 @@ namespace Accolades.Maije.Infrastructure
         /// Initialize a new <see cref="RepositoryBase{TEntity, TIdentifier}"/>
         /// </summary>
         /// <param name="databaseContext">The database context</param>
-        public RepositoryBase(DbContext databaseContext)
+        public RepositoryBase(IMaijeDbContext databaseContext)
         {
-            if (databaseContext == null) throw new ArgumentNullException(nameof(databaseContext));
+            if (databaseContext == null)
+                throw new ArgumentNullException(nameof(databaseContext));
 
             // We don't give access to the data context to prevent usage of SaveChanges() and other stuff
             // So we only store DbSet
-            DbSet = databaseContext.Set<TEntity>();
+            DbSet = databaseContext.Set<TEntity>() as DbSet<TEntity>; // Ugly cast, maybe wa can find a better way
+
+            if(DbSet == null)
+            {
+                throw new InfrastructureException($"The {nameof(databaseContext)} must be a MaijeDbContext to work with repository.");
+            }
         }
 
         /// <summary>

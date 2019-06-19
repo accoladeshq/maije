@@ -1,4 +1,5 @@
-﻿using Accolades.Maije.Infrastructure.Tests.Entities;
+﻿using Accolades.Maije.Domain.Contracts;
+using Accolades.Maije.Infrastructure.Tests.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -10,7 +11,7 @@ namespace Accolades.Maije.Infrastructure.Tests.Repositories
         /// Initialize a new <see cref="ActivateTestRepository"/>
         /// </summary>
         /// <param name="databaseContext"></param>
-        public ActivateTestRepository(DbContext databaseContext) : base(databaseContext)
+        public ActivateTestRepository(IMaijeDbContext databaseContext) : base(databaseContext)
         {
         }
     }

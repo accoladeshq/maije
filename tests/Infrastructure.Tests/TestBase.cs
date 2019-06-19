@@ -1,3 +1,5 @@
+using Accolades.Maije.Domain.Contracts;
+using Accolades.Maije.Infrastructure.Data;
 using Accolades.Maije.Infrastructure.Tests.Data;
 using Accolades.Maije.Infrastructure.Tests.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +12,7 @@ namespace Accolades.Maije.Infrastructure.Tests
         /// <summary>
         /// Gets the data context
         /// </summary>
-        protected DbContext DbContext { get; private set; }
+        protected MaijeDbContext DbContext { get; private set; }
 
         /// <summary>
         /// Gets the data context snapshot
