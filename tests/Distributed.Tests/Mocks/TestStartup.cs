@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using Accolades.Maije.Distributed.Tests.Mocks.Data;
 using Accolades.Maije.Distributed.WebApi;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Accolades.Maije.Distributed.Tests.Mocks
 {
@@ -13,6 +15,10 @@ namespace Accolades.Maije.Distributed.Tests.Mocks
         /// <param name="services">The services</param>
         protected override void ConfigureContainer(IServiceCollection services)
         {
+            services.AddDbContext<TestDbContext>(o =>
+            {
+                o.UseInMemoryDatabase("Test");
+            });
         }
 
         /// <summary>

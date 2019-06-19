@@ -1,4 +1,5 @@
 ﻿using Accolades.Maije.Domain.Contracts;
+using Accolades.Maije.Infrastructure;
 using Accolades.Maije.Infrastructure.Data;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -22,6 +23,8 @@ namespace Accolades.Maije.Distributed.WebApi
             var builder = new ContainerBuilder();
 
             var scanAssemblies = GetResourceAssemblies().ToArray();
+
+            builder.RegisterGeneric(typeof(RepositoryBase<,>)).As(typeof(IRepositoryBase<,>));
 
             builder.RegisterAssemblyTypes(scanAssemblies)
                 .Where(t => t.Name.EndsWith("Repository") || typeof(IMaijeDbContext).IsAssignableFrom(t))

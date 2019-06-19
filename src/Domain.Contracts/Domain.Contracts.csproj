@@ -6,4 +6,8 @@
     <RootNamespace>Accolades.Maije.Domain.Contracts</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
 </Project>

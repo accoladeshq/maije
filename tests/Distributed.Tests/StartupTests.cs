@@ -1,4 +1,5 @@
 using Accolades.Maije.Distributed.Tests.Mocks;
+using Accolades.Maije.Distributed.Tests.Mocks.Entities;
 using Accolades.Maije.Domain.Contracts;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,16 @@ namespace Accolades.Maije.Distributed.Tests
     [TestClass]
     public class StartupTests
     {
+        [TestMethod]
+        public void Should_RetrieveRepository_When_ProvidingOpenGenericVersion()
+        {
+            var serviceProvider = GetDefaultServiceProvider();
+
+            var repositoryBase = serviceProvider.GetService<IRepositoryBase<ValueTest, int>>();
+
+            repositoryBase.Should().NotBeNull();
+        }
+
         [TestMethod]
         public void Should_RegisterRepositories_When_Bootstrap()
         {

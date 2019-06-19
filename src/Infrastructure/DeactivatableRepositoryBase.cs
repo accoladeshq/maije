@@ -1,13 +1,13 @@
-﻿using Accolades.Maije.Domain.Entities;
+﻿using Accolades.Maije.Domain.Contracts;
+using Accolades.Maije.Domain.Entities;
 using Accolades.Maije.Domain.Entities.Commons;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Accolades.Maije.Infrastructure
 {
-    public abstract class DeactivatableRepositoryBase<TEntity, TIdentifier> : RepositoryBase<TEntity, TIdentifier>
+    public class DeactivatableRepositoryBase<TEntity, TIdentifier> : RepositoryBase<TEntity, TIdentifier>
         where TEntity : class, IIdentity<TIdentifier>, IDeactivatable
         where TIdentifier : IEquatable<TIdentifier>
     {
@@ -15,7 +15,7 @@ namespace Accolades.Maije.Infrastructure
         /// Initialize a new <see cref="DeactivatableRepositoryBase{TEntity, TIdentifier}"/>
         /// </summary>
         /// <param name="databaseContext">The database context</param>
-        public DeactivatableRepositoryBase(DbContext databaseContext) : base(databaseContext)
+        public DeactivatableRepositoryBase(IMaijeDbContext databaseContext) : base(databaseContext)
         {
         }
 

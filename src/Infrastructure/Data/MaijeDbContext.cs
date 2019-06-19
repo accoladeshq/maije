@@ -2,6 +2,8 @@
 using Accolades.Maije.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -59,6 +61,16 @@ namespace Accolades.Maije.Infrastructure.Data
             {
                 throw new InfrastructureException(e.Message, e);
             }
+        }
+
+        /// <summary>
+        /// Gets the data set for an entity
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <returns></returns>
+        IEnumerable<TEntity> IMaijeDbContext.Set<TEntity>()
+        {
+            return Set<TEntity>();
         }
     }
 }
