@@ -15,6 +15,9 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: GitVersion@5
+  displayName: Update version
+
 - task: UseDotNet@2
   displayName: Verify .NET Version
   inputs:
