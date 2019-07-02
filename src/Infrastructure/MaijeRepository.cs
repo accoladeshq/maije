@@ -1,6 +1,7 @@
 ﻿using Accolades.Maije.Crosscutting.Exceptions;
 using Accolades.Maije.Domain.Contracts;
 using Accolades.Maije.Domain.Entities;
+using Accolades.Maije.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,11 @@ namespace Accolades.Maije.Infrastructure
         where TIdentifier : IEquatable<TIdentifier>
     {
         /// <summary>
+        /// Gets the service who manage pagination validation
+        /// </summary>
+        private readonly IPaginationDomainService _paginationDomainService;
+
+        /// <summary>
         /// The db set of this repository
         /// </summary>
         protected readonly DbSet<TEntity> DbSet;
@@ -24,8 +30,10 @@ namespace Accolades.Maije.Infrastructure
         /// Initialize a new <see cref="MaijeRepository{TEntity, TIdentifier}"/>
         /// </summary>
         /// <param name="databaseContext">The database context</param>
-        public MaijeRepository(IMaijeDbContext databaseContext)
+        public MaijeRepository(IMaijeDbContext databaseContext, IPaginationDomainService paginationDomainService)
         {
+            _paginationDomainService = paginationDomainService ?? throw new ArgumentNullException(nameof(paginationDomainService));
+
             if (databaseContext == null)
                 throw new ArgumentNullException(nameof(databaseContext));
 
@@ -97,11 +105,15 @@ namespace Accolades.Maije.Infrastructure
         /// <returns></returns>
         public async Task<PaginationResult<TEntity>> GetPaginatedAsync(PaginationRequest paginationRequest)
         {
+            _paginationDomainService.ValidatePagination(paginationRequest);
+
             var paginatedQuery = GetPaginationQuery(paginationRequest);
 
             var items = await paginatedQuery.ToListAsync().ConfigureAwait(false);
 
-            return new PaginationResult<TEntity>(items, paginationRequest.Offset, 2, paginationRequest.Limit, null);
+            var links = _paginationDomainService.GetCurrentRequestPaginationLinks(paginationRequest.Offset, paginationRequest.Limit, items.Count);
+
+            return new PaginationResult<TEntity>(items, paginationRequest.Offset, items.Count, paginationRequest.Limit, links);
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿
+using Accolades.Maije.Crosscutting.Enums;
 
 namespace Accolades.Maije.AppService.Dto
 {

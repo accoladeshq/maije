@@ -1,6 +1,7 @@
 ﻿using Accolades.Maije.AppService;
 using Accolades.Maije.Distributed.WebApi.Extensions;
 using Accolades.Maije.Domain.Contracts;
+using Accolades.Maije.Domain.Services;
 using Accolades.Maije.Infrastructure;
 using Accolades.Maije.Infrastructure.Data;
 using Autofac;
@@ -25,7 +26,12 @@ namespace Accolades.Maije.Distributed.WebApi
         /// <returns>The service provier</returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvcCore();
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                });
 
             var builder = new ContainerBuilder();
 
@@ -34,8 +40,10 @@ namespace Accolades.Maije.Distributed.WebApi
 
             services.AddAutoMapper(scanAssemblies);
 
+            services.AddMaijeRouteContext();
             services.AddMaijeGenerics(scanAssemblies);
-                        
+
+            services.AddScoped<IPaginationDomainService, PaginationDomainService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             ConfigureContainer(services);

@@ -37,6 +37,12 @@ namespace Accolades.Maije.Distributed.WebApi.Extensions
             return dbContextType;
         }
 
+        /// <summary>
+        /// Get the controller required services
+        /// </summary>
+        /// <param name="types">All available types</param>
+        /// <param name="controllerType">The controller type</param>
+        /// <returns></returns>
         public static Dictionary<Type, Type> GetControllerRequiredServices(this IEnumerable<Type> types, Type controllerType)
         {
             var requiredServices = new Dictionary<Type, Type>();
@@ -46,7 +52,8 @@ namespace Accolades.Maije.Distributed.WebApi.Extensions
             var dto = controllerArguments[0];
             var identifier = controllerArguments[1];
             var entity = types.Where(t => t.Name == dto.Name.Replace("Dto", "")).First();
-
+            
+            // Repository setup
             var openRepositoryInterfaceType = typeof(IMaijeRepository<,>);
             var repositoryInterfaceType = openRepositoryInterfaceType.MakeGenericType(entity, identifier);
 
@@ -56,6 +63,7 @@ namespace Accolades.Maije.Distributed.WebApi.Extensions
             requiredServices.Add(repositoryInterfaceType, repositoryImplementationType);
             requiredServices.Add(typeof(IMaijeRepository), repositoryImplementationType);
 
+            // AppService Setup
             var openAppServiceInterfaceType = typeof(IMaijeAppService<,>);
             var appServiceInterfaceType = openAppServiceInterfaceType.MakeGenericType(dto, identifier);
 
@@ -67,6 +75,11 @@ namespace Accolades.Maije.Distributed.WebApi.Extensions
             return requiredServices;
         }
 
+        /// <summary>
+        /// Gets controller generic arguments
+        /// </summary>
+        /// <param name="controllerType">The controller type</param>
+        /// <returns></returns>
         private static Type[] GetControllerGenericArguments(this Type controllerType)
         {
             var parentType = controllerType;

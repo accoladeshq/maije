@@ -10,6 +10,12 @@ namespace Accolades.Maije.AppService.Adapters
         {
             CreateMap<PaginationRequestDto, PaginationRequest>()
                 .ConstructUsing(dto => new PaginationRequest(dto.Offset, dto.Limit, new Order(dto.OrderType, dto.OrderColumnName), dto.Search));
+
+            CreateMap(typeof(PaginationResult<>), typeof(PaginationResultDto<>));
+
+            CreateMap<PaginationLink, PaginationLinkDto>();
+
+            CreateMap<PaginationResultInfo, PaginationResultInfoDto>();
         }
     }
 }

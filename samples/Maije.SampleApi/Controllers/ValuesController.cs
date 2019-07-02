@@ -22,11 +22,9 @@ namespace Accolades.Maije.SampleApi.Controllers
         /// <param name="paginationRequestDto"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PaginationRequestDto paginationRequestDto)
+        public Task<IActionResult> GetAll([FromQuery] PaginationRequestDto paginationRequestDto)
         {
-            var dto = await ApplicationService.GetPaginatedAsync(paginationRequestDto);
-
-            return Ok(dto);
+            return GetPaginatedAsyncInternal(paginationRequestDto);
         }
 
         protected override string GetDefaultOrderColumn()

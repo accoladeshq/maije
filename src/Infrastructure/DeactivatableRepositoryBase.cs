@@ -1,6 +1,7 @@
 ﻿using Accolades.Maije.Domain.Contracts;
 using Accolades.Maije.Domain.Entities;
 using Accolades.Maije.Domain.Entities.Commons;
+using Accolades.Maije.Domain.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace Accolades.Maije.Infrastructure
         /// Initialize a new <see cref="DeactivatableRepositoryBase{TEntity, TIdentifier}"/>
         /// </summary>
         /// <param name="databaseContext">The database context</param>
-        public DeactivatableRepositoryBase(IMaijeDbContext databaseContext) : base(databaseContext)
+        public DeactivatableRepositoryBase(IMaijeDbContext databaseContext, IPaginationDomainService paginationDomainService) : base(databaseContext, paginationDomainService)
         {
         }
 
