@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Accolades.Maije.Domain.Contracts
 {
-    public interface IRepositoryBase
+    public interface IMaijeRepository
     {
     }
 
-    public interface IRepositoryBase<TEntity, TIdentifier> : IRepositoryBase
+    public interface IMaijeRepository<TEntity, TIdentifier> : IMaijeRepository
         where TEntity : class, IIdentity<TIdentifier>
         where TIdentifier : IEquatable<TIdentifier>
     {
@@ -19,6 +19,15 @@ namespace Accolades.Maije.Domain.Contracts
         /// <param name="id">The identifier of the item</param>
         /// <returns>The item or null if not found</returns>
         Task<TEntity> GetItemByIdAsync(TIdentifier id);
+
+        /// <summary>
+        /// Get paginated items
+        /// </summary>
+        /// <typeparam name="TProjectedEntity">The projection type</typeparam>
+        /// <param name="paginationRequest">The pagination request</param>
+        /// <param name="projection">The project to apply</param>
+        /// <returns></returns>
+        Task<PaginationResult<TEntity>> GetPaginatedAsync(PaginationRequest paginationRequest);
 
         /// <summary>
         /// Gets an item function of an identifier

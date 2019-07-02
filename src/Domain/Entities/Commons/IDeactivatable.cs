@@ -1,4 +1,4 @@
-﻿namespace Accolades.Maije.Domain.Entities.Commons
+﻿namespace Accolades.Maije.Domain.Entities
 {
     public interface IDeactivatable
     {

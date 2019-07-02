@@ -1,6 +1,7 @@
-﻿using Accolades.Maije.Domain.Contracts;
+﻿using Accolades.Maije.Crosscutting.Exceptions;
+using Accolades.Maije.Domain.Contracts;
 using Accolades.Maije.Domain.Entities;
-using Accolades.Maije.Infrastructure.Exceptions;
+using Accolades.Maije.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,21 +12,28 @@ using System.Threading.Tasks;
 
 namespace Accolades.Maije.Infrastructure
 {
-    public class RepositoryBase<TEntity, TIdentifier> : IRepositoryBase<TEntity, TIdentifier>
+    public class MaijeRepository<TEntity, TIdentifier> : IMaijeRepository<TEntity, TIdentifier>
         where TEntity : class, IIdentity<TIdentifier>
         where TIdentifier : IEquatable<TIdentifier>
     {
+        /// <summary>
+        /// Gets the service who manage pagination validation
+        /// </summary>
+        private readonly IPaginationDomainService _paginationDomainService;
+
         /// <summary>
         /// The db set of this repository
         /// </summary>
         protected readonly DbSet<TEntity> DbSet;
 
         /// <summary>
-        /// Initialize a new <see cref="RepositoryBase{TEntity, TIdentifier}"/>
+        /// Initialize a new <see cref="MaijeRepository{TEntity, TIdentifier}"/>
         /// </summary>
         /// <param name="databaseContext">The database context</param>
-        public RepositoryBase(IMaijeDbContext databaseContext)
+        public MaijeRepository(IMaijeDbContext databaseContext, IPaginationDomainService paginationDomainService)
         {
+            _paginationDomainService = paginationDomainService ?? throw new ArgumentNullException(nameof(paginationDomainService));
+
             if (databaseContext == null)
                 throw new ArgumentNullException(nameof(databaseContext));
 
@@ -89,6 +97,26 @@ namespace Accolades.Maije.Infrastructure
         }
 
         /// <summary>
+        /// Get paginated items
+        /// </summary>
+        /// <typeparam name="TProjectedEntity">The projection type</typeparam>
+        /// <param name="paginationRequest">The pagination request</param>
+        /// <param name="projection">The project to apply</param>
+        /// <returns></returns>
+        public async Task<PaginationResult<TEntity>> GetPaginatedAsync(PaginationRequest paginationRequest)
+        {
+            _paginationDomainService.ValidatePagination(paginationRequest);
+
+            var paginatedQuery = GetPaginationQuery(paginationRequest);
+
+            var items = await paginatedQuery.ToListAsync().ConfigureAwait(false);
+
+            var links = _paginationDomainService.GetCurrentRequestPaginationLinks(paginationRequest.Offset, paginationRequest.Limit, items.Count);
+
+            return new PaginationResult<TEntity>(items, paginationRequest.Offset, items.Count, paginationRequest.Limit, links);
+        }
+
+        /// <summary>
         /// Update an entity
         /// </summary>
         /// <param name="entityToUpdate">The entity to update.</param>
@@ -115,6 +143,20 @@ namespace Accolades.Maije.Infrastructure
         }
         
         /// <summary>
+        /// Gets the pagination query
+        /// </summary>
+        /// <param name="paginationRequest">The pagination request</param>
+        /// <returns></returns>
+        protected virtual IQueryable<TEntity> GetPaginationQuery(PaginationRequest paginationRequest)
+        {
+            IQueryable<TEntity> query = DbSet.AsNoTracking();
+
+            query = query.Skip(paginationRequest.Offset).Take(paginationRequest.Limit);
+
+            return query;
+        }
+
+        /// <summary>
         /// Get the by identifier query
         /// </summary>
         /// <param name="identifier">The entity identifier</param>
@@ -131,6 +173,7 @@ namespace Accolades.Maije.Infrastructure
 
             return query;
         }
+
 
         /// <summary>
         /// Gets the items query

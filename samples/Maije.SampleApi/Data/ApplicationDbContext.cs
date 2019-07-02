@@ -1,4 +1,5 @@
 ﻿using Accolades.Maije.Infrastructure.Data;
+using Accolades.Maije.SampleApi.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Accolades.Maije.SampleApi.Data
@@ -12,5 +13,7 @@ namespace Accolades.Maije.SampleApi.Data
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<Value> Values { get; private set; }
     }
 }

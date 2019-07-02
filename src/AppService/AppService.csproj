@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Accolades.Maije.AppService</AssemblyName>
+    <RootNamespace>Accolades.Maije.AppService</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppService.Dto\AppService.Dto.csproj" />
+    <ProjectReference Include="..\Domain.Contracts\Domain.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,9 +1,8 @@
-﻿using Accolades.Maije.Domain.Contracts;
-using Accolades.Maije.Infrastructure.Exceptions;
+﻿using Accolades.Maije.Crosscutting.Exceptions;
+using Accolades.Maije.Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

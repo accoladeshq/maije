@@ -1,8 +1,12 @@
-﻿using Accolades.Maije.Domain.Contracts;
-using Accolades.Maije.Infrastructure;
+﻿using Accolades.Maije.AppService;
+using Accolades.Maije.Distributed.WebApi.Extensions;
+using Accolades.Maije.Domain.Contracts;
+using Accolades.Maije.Domain.Services;
 using Accolades.Maije.Infrastructure.Data;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -20,29 +24,41 @@ namespace Accolades.Maije.Distributed.WebApi
         /// <returns>The service provier</returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                });
+
             var builder = new ContainerBuilder();
 
-            var scanAssemblies = GetResourceAssemblies().ToArray();
+            var baseAssemblies = new List<Assembly> { typeof(MaijeAppService).Assembly };
+            var scanAssemblies = GetResourceAssemblies().Union(baseAssemblies).ToArray();
 
-            builder.RegisterGeneric(typeof(RepositoryBase<,>)).As(typeof(IRepositoryBase<,>));
+            services.AddAutoMapper(scanAssemblies);
 
-            builder.RegisterAssemblyTypes(scanAssemblies)
-                .Where(t => t.Name.EndsWith("Repository") || typeof(IMaijeDbContext).IsAssignableFrom(t))
-                .AsImplementedInterfaces();
+            services.AddMaijeRouteContext();
+            services.AddMaijeGenerics(scanAssemblies);
 
+            services.AddScoped<IPaginationDomainService, PaginationDomainService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             ConfigureContainer(services);
 
-            // Note that Populate is basically a foreach to add things
-            // into Autofac that are in the collection. If you register
-            // things in Autofac BEFORE Populate then the stuff in the
-            // ServiceCollection can override those things; if you register
-            // AFTER Populate those registrations can override things
-            // in the ServiceCollection..
+            // override from services
             builder.Populate(services);
 
             return new AutofacServiceProvider(builder.Build());
+        }
+
+        /// <summary>
+        /// Configure the application pipeline
+        /// </summary>
+        /// <param name="app"></param>
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseMvcWithDefaultRoute();
         }
 
         /// <summary>

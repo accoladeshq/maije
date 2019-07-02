@@ -1,5 +1,4 @@
 ﻿using Accolades.Maije.Domain.Entities;
-using Accolades.Maije.Domain.Entities.Commons;
 
 namespace Accolades.Maije.Infrastructure.Tests.Entities
 {

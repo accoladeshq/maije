@@ -1,5 +1,4 @@
 ﻿using Accolades.Maije.Domain.Entities;
-using Accolades.Maije.Domain.Entities.Commons;
 using System.Collections.Generic;
 using System.Linq;
 

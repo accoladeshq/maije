@@ -1,11 +1,13 @@
+using Accolades.Maije.AppService;
 using Accolades.Maije.Distributed.Tests.Mocks;
+using Accolades.Maije.Distributed.Tests.Mocks.Dto;
 using Accolades.Maije.Distributed.Tests.Mocks.Entities;
 using Accolades.Maije.Domain.Contracts;
+using Accolades.Maije.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 
 namespace Accolades.Maije.Distributed.Tests
 {
@@ -13,24 +15,34 @@ namespace Accolades.Maije.Distributed.Tests
     public class StartupTests
     {
         [TestMethod]
-        public void Should_RetrieveRepository_When_ProvidingOpenGenericVersion()
+        public void Should_RetrieveGenericRepository_When_Bootstrap()
         {
             var serviceProvider = GetDefaultServiceProvider();
 
-            var repositoryBase = serviceProvider.GetService<IRepositoryBase<ValueTest, int>>();
+            var repositoryBase = serviceProvider.GetService<IMaijeRepository<ValueTest, int>>();
 
             repositoryBase.Should().NotBeNull();
+            repositoryBase.Should().BeOfType<MaijeRepository<ValueTest, int>>();
         }
 
         [TestMethod]
-        public void Should_RegisterRepositories_When_Bootstrap()
+        public void Should_RetrieveGenericDeactivatableRepository_When_Bootstrap()
         {
             var serviceProvider = GetDefaultServiceProvider();
 
-            var repositoriesNames = typeof(StartupTests).Assembly.GetTypes().Where(type => type.Name.EndsWith("Repository")).Select(type => type.Name);
-            var registerRepositoriesNames = serviceProvider.GetServices<IRepositoryBase>().Select(instance => instance.GetType().Name);
+            var repositoryBase = serviceProvider.GetService<IMaijeRepository<User, int>>();
 
-            repositoriesNames.Should().BeEquivalentTo(registerRepositoriesNames, o => o.WithoutStrictOrdering());
+            repositoryBase.Should().BeOfType<DeactivatableMaijeRepository<User, int>>();
+        }
+
+        [TestMethod]
+        public void Should_RetrieveGenericAppService_When_Bootstrap()
+        {
+            var servicesProvider = GetDefaultServiceProvider();
+
+            var appService = servicesProvider.GetService<IMaijeAppService<ValueTestDto, int>>();
+
+            appService.Should().NotBeNull();
         }
 
         [TestMethod]

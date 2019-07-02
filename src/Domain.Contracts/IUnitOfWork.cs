@@ -16,13 +16,13 @@ namespace Accolades.Maije.Domain.Contracts
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TI">The type of the i.</typeparam>
         /// <returns></returns>
-        T GetRepository<T>() where T : IRepositoryBase;
+        T GetRepository<T>() where T : IMaijeRepository;
 
         /// <summary>
         /// Gets the repository.
         /// </summary>
         /// <param name="repositoryType">Type of the repository.</param>
         /// <returns></returns>
-        IRepositoryBase GetRepository(Type repositoryType);
+        IMaijeRepository GetRepository(Type repositoryType);
     }
 }
