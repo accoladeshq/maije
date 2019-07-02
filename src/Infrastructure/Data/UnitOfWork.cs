@@ -1,5 +1,5 @@
-﻿using Accolades.Maije.Domain.Contracts;
-using Accolades.Maije.Infrastructure.Exceptions;
+﻿using Accolades.Maije.Crosscutting.Exceptions;
+using Accolades.Maije.Domain.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace Accolades.Maije.Infrastructure.Data
         /// <summary>
         /// The available repositories
         /// </summary>
-        private readonly IEnumerable<IRepositoryBase> _availableRepositories;
+        private readonly IEnumerable<IMaijeRepository> _availableRepositories;
 
         /// <summary>
         /// To detect redundant calls
@@ -28,7 +28,7 @@ namespace Accolades.Maije.Infrastructure.Data
         /// Initialize an <see cref="UnitOfWorkBase"/>
         /// </summary>
         /// <param name="dbContext"></param>
-        public UnitOfWork(IMaijeDbContext dbContext, IEnumerable<IRepositoryBase> repositories)
+        public UnitOfWork(IMaijeDbContext dbContext, IEnumerable<IMaijeRepository> repositories)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _availableRepositories = repositories ?? throw new ArgumentNullException(nameof(repositories));
@@ -39,7 +39,7 @@ namespace Accolades.Maije.Infrastructure.Data
         /// </summary>
         /// <typeparam name="T">Type of the repository</typeparam>
         /// <returns></returns>
-        public T GetRepository<T>() where T : IRepositoryBase
+        public T GetRepository<T>() where T : IMaijeRepository
         {
             var repositoryType = typeof(T);
 
@@ -52,7 +52,7 @@ namespace Accolades.Maije.Infrastructure.Data
         /// <param name="repositoryType">Type of the repository.</param>
         /// <returns></returns>
         /// <exception cref="Exception">The repository not exists or not inherit from IRepositoryBase</exception>
-        public IRepositoryBase GetRepository(Type repositoryType)
+        public IMaijeRepository GetRepository(Type repositoryType)
         {
             var repository = _availableRepositories.FirstOrDefault(r => repositoryType.IsAssignableFrom(r.GetType()));
 

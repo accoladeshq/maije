@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Accolades.Maije.Infrastructure
 {
-    public class DeactivatableRepositoryBase<TEntity, TIdentifier> : RepositoryBase<TEntity, TIdentifier>
+    public class DeactivatableRepositoryBase<TEntity, TIdentifier> : MaijeRepository<TEntity, TIdentifier>
         where TEntity : class, IIdentity<TIdentifier>, IDeactivatable
         where TIdentifier : IEquatable<TIdentifier>
     {

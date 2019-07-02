@@ -1,4 +1,4 @@
-﻿using Accolades.Maije.Infrastructure.Exceptions;
+﻿using Accolades.Maije.Crosscutting.Exceptions;
 using Accolades.Maije.Infrastructure.Tests.Extensions;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

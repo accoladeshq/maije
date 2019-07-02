@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
-namespace Accolades.Maije.Infrastructure.Exceptions
+namespace Accolades.Maije.Crosscutting.Exceptions
 {
     public class InfrastructureException : Exception
     {

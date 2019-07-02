@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Accolades.Maije.Infrastructure.Tests.Repositories
 {
-    internal class TestRepository : RepositoryBase<Test, int>
+    internal class TestRepository : MaijeRepository<Test, int>
     {
         /// <summary>
         /// Initialize a new <see cref="TestRepository"/>

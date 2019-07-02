@@ -1,9 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Accolades.Maije.Domain</AssemblyName>
-    <RootNamespace>Accolades.Maije.Domain</RootNamespace>
+    <AssemblyName>Accolades.Maije.AppService.Dto</AssemblyName>
+    <RootNamespace>Accolades.Maije.AppService.Dto</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

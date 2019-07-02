@@ -2,7 +2,7 @@
 
 namespace Accolades.Maije.Distributed.Tests.Mocks.Repositories
 {
-    internal class ValueTestRepository : IRepositoryBase
+    internal class ValueTestRepository : IMaijeRepository
     {
     }
 }

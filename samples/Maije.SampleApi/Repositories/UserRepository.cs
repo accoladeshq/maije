@@ -6,7 +6,7 @@ namespace Accolades.Maije.SampleApi.Repositories
     {
     }
 
-    public interface IUserRepository : IRepositoryBase
+    public interface IUserRepository : IMaijeRepository
     {
 
     }
