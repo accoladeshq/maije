@@ -40,8 +40,9 @@ namespace Accolades.Maije.Domain.Contracts
         /// <summary>
         /// Gets items
         /// </summary>
+        /// <param name="listRequest">The list request</param>
         /// <returns></returns>
-        Task<IEnumerable<TEntity>> GetItemsAsync();
+        Task<IEnumerable<TEntity>> GetItemsAsync(ListRequest listRequest);
 
         /// <summary>
         /// Create an entity asynchronously

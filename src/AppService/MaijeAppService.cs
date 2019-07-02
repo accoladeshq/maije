@@ -93,6 +93,23 @@ namespace Accolades.Maije.AppService
             return dto;
         }
 
+        /// <summary>
+        /// Gets items
+        /// </summary>
+        /// <param name="listRequest">The list request</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<TDto>> GetItemsAsync(ListRequestDto listRequest)
+        {
+            var listRequestEntity = Mapper.Map<ListRequest>(listRequest);
+
+            var repository = UnitOfWork.GetRepository<TRepository>();
+
+            var entities = await repository.GetItemsAsync(listRequestEntity);
+
+            var dto = Mapper.Map<IEnumerable<TDto>>(entities);
+
+            return dto;
+        }
 
         /// <summary>
         /// Gets the page asynchronous.

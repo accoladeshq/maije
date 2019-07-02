@@ -53,9 +53,9 @@ namespace Accolades.Maije.Infrastructure
         /// </summary>
         /// <param name="trackable">If we need to track the return entities</param>
         /// <returns></returns>
-        protected override IQueryable<TEntity> GetItemsQuery(bool trackable)
+        protected override IQueryable<TEntity> GetItemsQuery(bool trackable, Order order)
         {
-            var query = base.GetItemsQuery(trackable);
+            var query = base.GetItemsQuery(trackable, order);
 
             return query.Where(e => e.IsActive);
         }

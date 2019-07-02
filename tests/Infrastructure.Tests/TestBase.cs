@@ -1,8 +1,8 @@
-using Accolades.Maije.Domain.Contracts;
+using Accolades.Maije.Crosscutting.Enums;
+using Accolades.Maije.Domain.Entities;
 using Accolades.Maije.Infrastructure.Data;
 using Accolades.Maije.Infrastructure.Tests.Data;
 using Accolades.Maije.Infrastructure.Tests.Extensions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Accolades.Maije.Infrastructure.Tests
@@ -47,6 +47,42 @@ namespace Accolades.Maije.Infrastructure.Tests
                 DbContext.Database.EnsureDeleted();
                 DbContext.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Gets a default ascending order
+        /// </summary>
+        /// <returns></returns>
+        protected Order GetDefaultAscendingOrder()
+        {
+            return new Order(OrderType.Asc, "id");
+        }
+
+        /// <summary>
+        /// Gets a default descending order
+        /// </summary>
+        /// <returns></returns>
+        protected Order GetDefaultDescendingOrder()
+        {
+            return new Order(OrderType.Desc, "id");
+        }
+
+        /// <summary>
+        /// Gets a default ascending order
+        /// </summary>
+        /// <returns></returns>
+        protected ListRequest GetDefaultAscendingListRequest()
+        {
+            return new ListRequest(GetDefaultAscendingOrder(), string.Empty);
+        }
+
+        /// <summary>
+        /// Gets a default descending order
+        /// </summary>
+        /// <returns></returns>
+        protected ListRequest GetDefaultDescendingListRequest()
+        {
+            return new ListRequest(GetDefaultDescendingOrder(), string.Empty);
         }
     }
 }
