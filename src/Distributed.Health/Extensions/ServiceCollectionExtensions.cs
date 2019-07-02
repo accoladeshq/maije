@@ -6,7 +6,9 @@ namespace Accolades.Maije.Distributed.Health
     {
         public static void AddMaijeHealthChecks(this IServiceCollection services)
         {
-            services.AddHealthChecks();
+            // https://tools.ietf.org/html/draft-inadarei-api-health-check-02
+            services.AddHealthChecks()
+                .AddCheck<MaijeDbContextHealthCheck>("Database");
         }
     }
 }
