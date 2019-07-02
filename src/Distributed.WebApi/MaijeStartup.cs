@@ -1,4 +1,5 @@
 ﻿using Accolades.Maije.AppService;
+using Accolades.Maije.Distributed.Health;
 using Accolades.Maije.Distributed.WebApi.Extensions;
 using Accolades.Maije.Domain.Contracts;
 using Accolades.Maije.Domain.Services;
@@ -31,6 +32,8 @@ namespace Accolades.Maije.Distributed.WebApi
                     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 });
 
+            services.AddMaijeHealthChecks();
+
             var builder = new ContainerBuilder();
 
             var baseAssemblies = new List<Assembly> { typeof(MaijeAppService).Assembly };
@@ -59,6 +62,8 @@ namespace Accolades.Maije.Distributed.WebApi
         public void Configure(IApplicationBuilder app)
         {
             app.UseMvcWithDefaultRoute();
+
+            app.UseMaijeHealthChecks();
         }
 
         /// <summary>

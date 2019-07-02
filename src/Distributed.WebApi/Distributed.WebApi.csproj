@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AppService.Dto\AppService.Dto.csproj" />
     <ProjectReference Include="..\AppService\AppService.csproj" />
+    <ProjectReference Include="..\Distributed.Health\Distributed.Health.csproj" />
     <ProjectReference Include="..\Domain.Contracts\Domain.Contracts.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
