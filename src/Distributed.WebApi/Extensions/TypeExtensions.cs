@@ -1,6 +1,7 @@
 ﻿using Accolades.Maije.AppService;
 using Accolades.Maije.Crosscutting.Exceptions;
 using Accolades.Maije.Domain.Contracts;
+using Accolades.Maije.Domain.Entities;
 using Accolades.Maije.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,13 @@ namespace Accolades.Maije.Distributed.WebApi.Extensions
             var openRepositoryInterfaceType = typeof(IMaijeRepository<,>);
             var repositoryInterfaceType = openRepositoryInterfaceType.MakeGenericType(entity, identifier);
 
-            var openRepositoryImplementationType = typeof(MaijeRepository<,>);
+            Type openRepositoryImplementationType = null;
+
+            if(entity.GetInterface(typeof(IDeactivatable).Name) != null)
+                openRepositoryImplementationType = typeof(DeactivatableMaijeRepository<,>);
+            else
+                openRepositoryImplementationType = typeof(MaijeRepository<,>);
+
             var repositoryImplementationType = openRepositoryImplementationType.MakeGenericType(entity, identifier);
 
             requiredServices.Add(repositoryInterfaceType, repositoryImplementationType);

@@ -3,6 +3,7 @@ using Accolades.Maije.Distributed.Tests.Mocks;
 using Accolades.Maije.Distributed.Tests.Mocks.Dto;
 using Accolades.Maije.Distributed.Tests.Mocks.Entities;
 using Accolades.Maije.Domain.Contracts;
+using Accolades.Maije.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,6 +22,17 @@ namespace Accolades.Maije.Distributed.Tests
             var repositoryBase = serviceProvider.GetService<IMaijeRepository<ValueTest, int>>();
 
             repositoryBase.Should().NotBeNull();
+            repositoryBase.Should().BeOfType<MaijeRepository<ValueTest, int>>();
+        }
+
+        [TestMethod]
+        public void Should_RetrieveGenericDeactivatableRepository_When_Bootstrap()
+        {
+            var serviceProvider = GetDefaultServiceProvider();
+
+            var repositoryBase = serviceProvider.GetService<IMaijeRepository<User, int>>();
+
+            repositoryBase.Should().BeOfType<DeactivatableMaijeRepository<User, int>>();
         }
 
         [TestMethod]

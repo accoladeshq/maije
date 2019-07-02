@@ -2,13 +2,11 @@
 using Accolades.Maije.Distributed.WebApi.Extensions;
 using Accolades.Maije.Domain.Contracts;
 using Accolades.Maije.Domain.Services;
-using Accolades.Maije.Infrastructure;
 using Accolades.Maije.Infrastructure.Data;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
