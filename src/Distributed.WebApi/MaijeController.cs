@@ -109,6 +109,28 @@ namespace Accolades.Maije.Distributed.WebApi
         }
 
         /// <summary>
+        /// Gets items
+        /// </summary>
+        /// <param name="listRequest">The list request</param>
+        /// <returns></returns>
+        protected virtual async Task<IActionResult> GetItemsAsyncInternal(ListRequestDto listRequest)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(listRequest.OrderColumnName))
+                    listRequest.OrderColumnName = GetDefaultOrderColumn();
+
+                var result = await ApplicationService.GetItemsAsync(listRequest);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return ManageException(e);
+            }
+        }
+
+        /// <summary>
         /// Gets an entity by it's identifier
         /// </summary>
         /// <param name="identifier">The entity identifier</param>

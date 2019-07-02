@@ -1,4 +1,6 @@
-﻿using Accolades.Maije.Crosscutting.Exceptions;
+﻿using Accolades.Maije.Crosscutting.Enums;
+using Accolades.Maije.Crosscutting.Exceptions;
+using Accolades.Maije.Domain.Entities;
 using Accolades.Maije.Infrastructure.Tests.Extensions;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,7 +15,7 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            var items = await repository.GetItemsAsync();
+            var items = await repository.GetItemsAsync(GetDefaultAscendingListRequest());
 
             items.Should().HaveCount(Snapshot.ActivableTests.ActivateCount());
         }

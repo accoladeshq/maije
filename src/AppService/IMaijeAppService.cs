@@ -1,4 +1,5 @@
 ﻿using Accolades.Maije.AppService.Dto;
+using Accolades.Maije.Crosscutting.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,6 +14,13 @@ namespace Accolades.Maije.AppService
         /// </summary>
         /// <returns></returns>
         Task<PaginationResultDto<TDto>> GetPaginatedAsync(PaginationRequestDto paginationRequest);
+
+        /// <summary>
+        /// Gets items
+        /// </summary>
+        /// <param name="listRequest">The list request</param>
+        /// <returns></returns>
+        Task<IEnumerable<TDto>> GetItemsAsync(ListRequestDto listRequest);
 
         /// <summary>
         /// Gets the by identifier.

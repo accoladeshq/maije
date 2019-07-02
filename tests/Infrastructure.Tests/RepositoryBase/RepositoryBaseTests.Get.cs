@@ -1,4 +1,6 @@
-﻿using Accolades.Maije.Crosscutting.Exceptions;
+﻿using Accolades.Maije.Crosscutting.Enums;
+using Accolades.Maije.Crosscutting.Exceptions;
+using Accolades.Maije.Domain.Entities;
 using Accolades.Maije.Infrastructure.Tests.Extensions;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,9 +15,49 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            var items = await repository.GetItemsAsync();
+            var items = await repository.GetItemsAsync(GetDefaultAscendingListRequest());
 
             items.Should().HaveCount(Snapshot.Tests.Count);
+        }
+
+        [TestMethod]
+        public async Task Should_ReturnAscendingOrderedList_When_QueryDbSet()
+        {
+            var repository = GetDefaultRepository();
+
+            var items = await repository.GetItemsAsync(GetDefaultAscendingListRequest());
+
+            items.Should().BeInAscendingOrder(i => i.Id);
+        }
+
+        [TestMethod]
+        public async Task Should_ReturnDescendingOrderedList_When_QueryDbSet()
+        {
+            var repository = GetDefaultRepository();
+
+            var items = await repository.GetItemsAsync(GetDefaultDescendingListRequest());
+
+            items.Should().BeInDescendingOrder(i => i.Id);
+        }
+
+        [TestMethod]
+        public async Task Should_ReturnPaginatedAscendingOrderedList_When_QueryDbSet()
+        {
+            var repository = GetDefaultRepository();
+
+            var paginationResult = await repository.GetPaginatedAsync(new PaginationRequest(0, 10, GetDefaultAscendingOrder(), string.Empty));
+
+            paginationResult.Items.Should().BeInAscendingOrder(i => i.Id);
+        }
+
+        [TestMethod]
+        public async Task Should_ReturnPaginatedDescendingOrderedList_When_QueryDbSet()
+        {
+            var repository = GetDefaultRepository();
+
+            var paginationResult = await repository.GetPaginatedAsync(new PaginationRequest(0, 10, GetDefaultDescendingOrder(), string.Empty));
+
+            paginationResult.Items.Should().BeInDescendingOrder(i => i.Id);
         }
 
         [TestMethod]

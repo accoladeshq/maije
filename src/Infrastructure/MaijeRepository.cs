@@ -2,6 +2,7 @@
 using Accolades.Maije.Domain.Contracts;
 using Accolades.Maije.Domain.Entities;
 using Accolades.Maije.Domain.Services;
+using Accolades.Maije.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -51,9 +52,9 @@ namespace Accolades.Maije.Infrastructure
         /// Gets all repository items
         /// </summary>
         /// <returns>Return all items from the database</returns>
-        public async Task<IEnumerable<TEntity>> GetItemsAsync()
+        public async Task<IEnumerable<TEntity>> GetItemsAsync(ListRequest listRequest)
         {
-            return await GetItemsQuery(false).ToListAsync().ConfigureAwait(false);
+            return await GetItemsQuery(false, listRequest.Order).ToListAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -151,7 +152,7 @@ namespace Accolades.Maije.Infrastructure
         {
             IQueryable<TEntity> query = DbSet.AsNoTracking();
 
-            query = query.Skip(paginationRequest.Offset).Take(paginationRequest.Limit);
+            query = query.OrderBy(paginationRequest.Order).Skip(paginationRequest.Offset).Take(paginationRequest.Limit);
 
             return query;
         }
@@ -180,7 +181,7 @@ namespace Accolades.Maije.Infrastructure
         /// </summary>
         /// <param name="trackable"></param>
         /// <returns></returns>
-        protected virtual IQueryable<TEntity> GetItemsQuery(bool trackable)
+        protected virtual IQueryable<TEntity> GetItemsQuery(bool trackable, Order order)
         {
             IQueryable<TEntity> query;
 
@@ -189,7 +190,7 @@ namespace Accolades.Maije.Infrastructure
             else
                 query = DbSet.AsNoTracking();
 
-            return query;
+            return query.OrderBy(order);
         }
 
         /// <summary>
