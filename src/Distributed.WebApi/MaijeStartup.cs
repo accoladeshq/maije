@@ -1,4 +1,5 @@
 ﻿using Accolades.Maije.AppService;
+using Accolades.Maije.Crosscutting.Configurations;
 using Accolades.Maije.Distributed.Documentation.Extensions;
 using Accolades.Maije.Distributed.Health;
 using Accolades.Maije.Distributed.WebApi.Extensions;
@@ -9,8 +10,8 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,13 +68,22 @@ namespace Accolades.Maije.Distributed.WebApi
         /// Configure the application pipeline
         /// </summary>
         /// <param name="app"></param>
-        public void Configure(IApplicationBuilder app)
+        /// <summary>
+        /// Configure the application pipeline
+        /// </summary>
+        /// <param name="app"></param>
+        public void Configure(IApplicationBuilder app, IOptions<MaijeConfiguration> configurationOptions)
         {
+            var configuration = configurationOptions.Value;
+
             app.UseMvcWithDefaultRoute();
 
             app.UseMaijeHealthChecks();
 
-            app.UseMaijeDocumentation();
+            if (configuration.DocumentationEnabled)
+            {
+                app.UseMaijeDocumentation();
+            }
         }
 
         /// <summary>
