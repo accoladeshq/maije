@@ -21,6 +21,9 @@ steps:
     packageType: 'sdk'
     version: '2.2.300'
 
+- task: GitVersion@5
+  displayName: Update Version
+
 - task: DotNetCoreCLI@2
   displayName: Restore dependencies
   inputs:
