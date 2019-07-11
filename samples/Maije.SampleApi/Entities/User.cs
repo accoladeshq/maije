@@ -2,7 +2,7 @@
 
 namespace Accolades.Maije.SampleApi.Entities
 {
-    public class User : IIdentity<int>
+    internal class User : IIdentity<int>
     {
         public int Id { get; set; }
     }
