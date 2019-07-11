@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Accolades.Maije.SampleApi.Data
 {
-    public class ApplicationDbContext : MaijeDbContext
+    internal class ApplicationDbContext : MaijeDbContext
     {
         /// <summary>
         /// Initialize a new <see cref="ApplicationDbContext"/>

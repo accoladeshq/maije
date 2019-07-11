@@ -1,4 +1,5 @@
 ﻿using Accolades.Maije.AppService;
+using Accolades.Maije.Distributed.Documentation.Extensions;
 using Accolades.Maije.Distributed.Health;
 using Accolades.Maije.Distributed.WebApi.Extensions;
 using Accolades.Maije.Domain.Contracts;
@@ -8,6 +9,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,8 @@ namespace Accolades.Maije.Distributed.WebApi
         /// <returns>The service provier</returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
@@ -32,7 +36,11 @@ namespace Accolades.Maije.Distributed.WebApi
                     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 });
 
+            services.AddCors();
+
             services.AddMaijeHealthChecks();
+            services.AddMaijeVersioning();
+            services.AddMaijeDocumentation();
 
             var builder = new ContainerBuilder();
 
@@ -64,6 +72,8 @@ namespace Accolades.Maije.Distributed.WebApi
             app.UseMvcWithDefaultRoute();
 
             app.UseMaijeHealthChecks();
+
+            app.UseMaijeDocumentation();
         }
 
         /// <summary>

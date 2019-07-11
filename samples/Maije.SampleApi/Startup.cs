@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Accolades.Maije.SampleApi
 {
-    public class Startup : MaijeStartup
+    internal class Startup : MaijeStartup
     {
         /// <summary>
         /// Configure the application container

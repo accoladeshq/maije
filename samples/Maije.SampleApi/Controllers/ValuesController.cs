@@ -8,10 +8,18 @@ using System.Threading.Tasks;
 
 namespace Accolades.Maije.SampleApi.Controllers
 {
-    [Route("api/[controller]")]
+    /// <summary>
+    /// Manage values
+    /// </summary>
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ValuesController : MaijeController<ValueDto, int>
     {
+        /// <summary>
+        /// Initialize a new <see cref="ValuesController"/>
+        /// </summary>
+        /// <param name="appService">The application service</param>
+        /// <param name="logger">The logger service</param>
         public ValuesController(IMaijeAppService<ValueDto, int> appService, ILogger<ValuesController> logger) : base(appService, logger)
         {
         }
@@ -27,6 +35,10 @@ namespace Accolades.Maije.SampleApi.Controllers
             return GetPaginatedAsyncInternal(paginationRequestDto);
         }
 
+        /// <summary>
+        /// Gets the default column order name
+        /// </summary>
+        /// <returns></returns>
         protected override string GetDefaultOrderColumn()
         {
             return "id";

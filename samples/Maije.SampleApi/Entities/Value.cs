@@ -2,7 +2,7 @@
 
 namespace Accolades.Maije.SampleApi.Entities
 {
-    public class Value : IIdentity<int>
+    internal class Value : IIdentity<int>
     {
         /// <summary>
         /// Initialize a new <see cref="Value"/>

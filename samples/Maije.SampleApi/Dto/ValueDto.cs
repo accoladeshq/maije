@@ -2,6 +2,9 @@
 
 namespace Accolades.Maije.SampleApi.Dto
 {
+    /// <summary>
+    /// Gets the value representation
+    /// </summary>
     public class ValueDto : IIdentityDto<int>
     {
         /// <summary>

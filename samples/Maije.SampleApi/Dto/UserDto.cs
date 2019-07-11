@@ -2,6 +2,9 @@
 
 namespace Accolades.Maije.SampleApi.Dto
 {
+    /// <summary>
+    /// Gets the user representation
+    /// </summary>
     public class UserDto : IIdentityDto<int>
     {
         /// <summary>

@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Accolades.Maije.SampleApi
 {
+    /// <summary>
+    /// The program
+    /// </summary>
     public class Program
     {
         /// <summary>

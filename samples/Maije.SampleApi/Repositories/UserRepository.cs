@@ -2,11 +2,11 @@
 
 namespace Accolades.Maije.SampleApi.Repositories
 {
-    public class UserRepository : IUserRepository
+    internal class UserRepository : IUserRepository
     {
     }
 
-    public interface IUserRepository : IMaijeRepository
+    internal interface IUserRepository : IMaijeRepository
     {
 
     }
