@@ -1,6 +1,7 @@
 ﻿using Accolades.Maije.Distributed.Tests.Mocks.Data;
 using Accolades.Maije.Distributed.WebApi;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Reflection;
@@ -9,6 +10,10 @@ namespace Accolades.Maije.Distributed.Tests.Mocks
 {
     internal class TestStartup : MaijeStartup
     {
+        public TestStartup(IConfiguration configuration) : base(configuration)
+        {
+        }
+
         /// <summary>
         /// Configure the container
         /// </summary>

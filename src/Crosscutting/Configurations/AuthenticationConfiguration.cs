@@ -23,7 +23,7 @@ namespace Accolades.Maije.Crosscutting.Configurations
         /// <summary>
         /// Used by aspnet to inject configuration
         /// </summary>
-        internal AuthenticationConfiguration()
+        public AuthenticationConfiguration()
         {
             // For aspnet core configuration purpose
         }
@@ -46,7 +46,7 @@ namespace Accolades.Maije.Crosscutting.Configurations
         {
             get
             {
-                return new Uri(new Uri(Authority), $"auth/realms/{Realm}/").AbsoluteUri;
+                return new Uri(new Uri(Authority), $"").AbsoluteUri;
             }
         }
 
@@ -55,7 +55,7 @@ namespace Accolades.Maije.Crosscutting.Configurations
         /// </summary>
         public string TokenUrl
         {
-            get { return new Uri(new Uri(AuthenticationUrl), "protocol/openid-connect/token").AbsoluteUri; }
+            get { return new Uri(new Uri(AuthenticationUrl), "connect/token").AbsoluteUri; }
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Accolades.Maije.Crosscutting.Configurations
         /// </summary>
         public string AuthorizationUrl
         {
-            get { return new Uri(new Uri(AuthenticationUrl), "protocol/openid-connect/auth").AbsoluteUri; }
+            get { return new Uri(new Uri(AuthenticationUrl), "connect/authorize").AbsoluteUri; }
         }
 
         /// <summary>

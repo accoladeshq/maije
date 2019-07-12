@@ -2,6 +2,7 @@
 using Accolades.Maije.AppService.Dto;
 using Accolades.Maije.Distributed.WebApi;
 using Accolades.Maije.SampleApi.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace Accolades.Maije.SampleApi.Controllers
     /// </summary>
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize]
     public class ValuesController : MaijeController<ValueDto, int>
     {
         /// <summary>

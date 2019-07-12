@@ -13,12 +13,14 @@ namespace Accolades.Maije.Crosscutting.Configurations
         /// <param name="flow"></param>
         /// <param name="scopes"></param>
         /// <param name="claims"></param>
-        public ClientConfiguration(string clientId, OAuth2Flow flow, Dictionary<string, string> scopes, List<string> claims)
+        public ClientConfiguration(string clientId, string audience, OAuth2Flow flow, Dictionary<string, string> scopes, List<string> claims)
         {
             ClientId = clientId;
+            Audience = audience;
             Flow = flow;
             Scopes = scopes ?? new Dictionary<string, string>();
             Claims = claims ?? new List<string>();
+
         }
 
         /// <summary>
@@ -45,6 +47,11 @@ namespace Accolades.Maije.Crosscutting.Configurations
         /// </summary>
         [Required]
         public string ClientId { get; private set; }
+
+        /// <summary>
+        /// Gets the api audience
+        /// </summary>
+        public string Audience { get; private set; }
 
         /// <summary>
         /// Gets the client secret

@@ -75,7 +75,7 @@ namespace Accolades.Maije.Distributed.Documentation.Extensions
 
             options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
                 {
-                    { "Swagger", authenticationConfiguration.FrontOfficeClient.Scopes.Select(kvp => kvp.Key )}
+                    { "Swagger", authenticationConfiguration.FrontOfficeClient.Scopes?.Select(kvp => kvp.Key )}
                 });
         }
     }
