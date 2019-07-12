@@ -35,6 +35,8 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
+    versioningScheme: 'byEnvVar',
+    versionEnvVar: 'GitVersion_NuGetVersionV2'
 
 - task: DotNetCoreCLI@2
   displayName: Run tests
