@@ -10,6 +10,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
@@ -21,6 +22,13 @@ namespace Accolades.Maije.Distributed.WebApi
 {
     public abstract class MaijeStartup
     {
+        protected readonly IConfiguration Configuration;
+
+        public MaijeStartup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         /// <summary>
         /// Configure services available in the application
         /// </summary>
@@ -28,6 +36,8 @@ namespace Accolades.Maije.Distributed.WebApi
         /// <returns>The service provier</returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.Configure<MaijeConfiguration>(a => Configuration.GetSection("api").Bind(a, o => o.BindNonPublicProperties = true));
+
             services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddMvc()
@@ -39,6 +49,7 @@ namespace Accolades.Maije.Distributed.WebApi
 
             services.AddCors();
 
+            services.AddMaijeAuthentication();
             services.AddMaijeHealthChecks();
             services.AddMaijeVersioning();
             services.AddMaijeDocumentation();
@@ -75,6 +86,8 @@ namespace Accolades.Maije.Distributed.WebApi
         public void Configure(IApplicationBuilder app, IOptions<MaijeConfiguration> configurationOptions)
         {
             var configuration = configurationOptions.Value;
+
+            app.UseAuthentication();
 
             app.UseMvcWithDefaultRoute();
 
