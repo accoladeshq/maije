@@ -23,7 +23,7 @@ namespace Accolades.Maije.Distributed.Documentation.Extensions
 
             services.AddSwaggerGen(options =>
             {
-                if (configuration.DocumentationEnabled)
+                if (configuration.OAuth2Enabled)
                 {
                     ConfigureAuthentication(options, configuration.Authentication);
                 }
