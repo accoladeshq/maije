@@ -5,9 +5,11 @@ using Accolades.Maije.Distributed.Tests.Mocks.Entities;
 using Accolades.Maije.Domain.Contracts;
 using Accolades.Maije.Infrastructure;
 using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.IO;
 
 namespace Accolades.Maije.Distributed.Tests
 {
@@ -61,7 +63,13 @@ namespace Accolades.Maije.Distributed.Tests
         /// <returns></returns>
         private IServiceProvider GetDefaultServiceProvider()
         {
-            var startup = new TestStartup();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            var configuration = builder.Build();
+
+            var startup = new TestStartup(configuration);
 
             var serviceProvicer = startup.ConfigureServices(new ServiceCollection());
 
