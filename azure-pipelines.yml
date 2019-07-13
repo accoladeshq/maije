@@ -24,7 +24,7 @@ steps:
 - task: GitVersion@5
   displayName: Update Version
   inputs:
-    additionalArguments: 'mode ContinuousDeployment'
+    additionalArguments: '/overrideConfig:mode=ContinuousDeployment'
 
 - task: DotNetCoreCLI@2
   displayName: Restore Dependencies
