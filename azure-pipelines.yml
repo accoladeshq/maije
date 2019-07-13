@@ -31,7 +31,7 @@ steps:
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
-  displayName: Build library
+  displayName: Build Library
   inputs:
     command: 'build'
     projects: '**/*.csproj'
@@ -44,16 +44,17 @@ steps:
     projects: '**/*.Tests.csproj'
     
 - task: DotNetCoreCLI@2
-  displayName: Publish library
+  displayName: Package Library
   inputs:
-    command: 'publish'
-    publishWebProjects: false
-    zipAfterPublish: false
-    projects: 'src/**/*.csproj'
-    modifyOutputPath: false
-    arguments: '--output $(Build.ArtifactStagingDirectory)'
+    command: 'pack'
+    packagesToPack: 'src/**/*.csproj'
+    nobuild: true
+    includesymbols: true
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'GitVersion.NuGetVersionV2'
  
 - task: PublishBuildArtifacts@1
+  displayName: Publish Artifacts
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'maije-master'
