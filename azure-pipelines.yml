@@ -25,7 +25,7 @@ steps:
   displayName: Update Version
 
 - task: DotNetCoreCLI@2
-  displayName: Restore dependencies
+  displayName: Restore Dependencies
   inputs:
     noCache: true
     command: 'restore'
