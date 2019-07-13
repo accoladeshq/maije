@@ -55,7 +55,7 @@ steps:
     configuration: $(BuildConfiguration)
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.NuGetVersionV2'
-    arguments: '-p:OutputPath=bin/$(BuildConfiguration)/netstandard2.0/'
+    arguments: '/p:OutputPath=bin/$(BuildConfiguration)/netstandard2.0/'
  
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifacts
