@@ -34,9 +34,8 @@ steps:
   displayName: Build Library
   inputs:
     command: 'build'
-    configuration: $(BuildConfiguration)
     projects: '**/*.csproj'
-    arguments: '-p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
+    arguments: '-c $(BuildConfiguration) -p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
 
 - task: DotNetCoreCLI@2
   displayName: Run tests
@@ -44,7 +43,7 @@ steps:
     command: 'test'
     nobuild: true
     projects: '**/*.Tests.csproj'
-    arguments: '--configuration $(BuildConfiguration)'
+    arguments: '-c $(BuildConfiguration)'
     
 - task: DotNetCoreCLI@2
   inputs:
@@ -53,7 +52,7 @@ steps:
     publishWebProjects: false
     projects: 'src/**/*.csproj'
     zipAfterPublish: false
-    arguments: '--output $(Build.ArtifactStagingDirectory)'
+    arguments: '-c $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
 - task: DotNetCoreCLI@2
   displayName: Package Library
@@ -62,10 +61,9 @@ steps:
     packagesToPack: 'src/**/*.csproj'
     includesymbols: true
     nobuild: true
-    configuration: $(BuildConfiguration)
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.NuGetVersionV2'
-    arguments: '/p:OutputPath=bin/$(BuildConfiguration)/netstandard2.0/'
+    arguments: '-c $(BuildConfiguration) /p:OutputPath=bin/$(BuildConfiguration)/netstandard2.0/'
  
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifacts
