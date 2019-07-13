@@ -41,6 +41,7 @@ steps:
   displayName: Run tests
   inputs:
     command: 'test'
+    nobuild: true
     projects: '**/*.Tests.csproj'
     arguments: '--configuration $(BuildConfiguration)'
     
@@ -50,9 +51,10 @@ steps:
     command: 'pack'
     packagesToPack: 'src/**/*.csproj'
     includesymbols: true
+    nobuild: true
+    configuration: $(BuildConfiguration)
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.NuGetVersionV2'
-    arguments: '--configuration $(BuildConfiguration) -p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
  
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifacts
