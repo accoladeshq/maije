@@ -25,19 +25,42 @@ steps:
   displayName: Update Version
 
 - task: DotNetCoreCLI@2
-  displayName: Restore dependencies
+  displayName: Restore Dependencies
   inputs:
+    noCache: true
     command: 'restore'
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
-  displayName: Build library
+  displayName: Build Library
   inputs:
     command: 'build'
     projects: '**/*.csproj'
+    arguments: '-c $(BuildConfiguration) -p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
 
 - task: DotNetCoreCLI@2
-  displayName: Run tests
+  displayName: Package Library
+  inputs:
+    command: 'pack'
+    packagesToPack: 'src/**/*.csproj'
+    includesymbols: true
+    nobuild: true
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'GitVersion.NuGetVersionV2'
+    outputDir: '$(Build.ArtifactStagingDirectory)'
+    arguments: '-c $(BuildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: Test Library
   inputs:
     command: 'test'
-    projects: '**/*.Tests.csproj'
+    projects: 'tests/**/*.csproj'
+    nobuild: true
+    arguments: '-c $(BuildConfiguration)'
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Artifacts
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'maije-master'
+    publishLocation: 'Container'
