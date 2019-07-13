@@ -49,11 +49,10 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: 'src/**/*.csproj'
-    nobuild: true
     includesymbols: true
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.NuGetVersionV2'
-    arguments: '--configuration $(BuildConfiguration)'
+    arguments: '--configuration $(BuildConfiguration) -p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
  
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifacts
