@@ -4,6 +4,16 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Accolades.Maije.Domain.Contracts</AssemblyName>
     <RootNamespace>Accolades.Maije.Domain.Contracts</RootNamespace>
+	<Authors>Authfix</Authors>
+    <Company>Accolades SAS</Company>
+    <Product>Maije Framework</Product>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/accoladeshq/maije</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright ©2019 Accolades SAS</Copyright>
+    <PackageProjectUrl>https://www.maije.net</PackageProjectUrl>
+    <Description>Maije brings a certain degree of "magic" to facilitate the development of ASP.NET Core projects.</Description>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
