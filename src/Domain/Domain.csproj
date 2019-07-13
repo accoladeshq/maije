@@ -11,6 +11,9 @@
     <RepositoryUrl>https://github.com/accoladeshq/maije</RepositoryUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Copyright>Copyright ©2019 Accolades SAS</Copyright>
+    <PackageProjectUrl>https://www.maije.net</PackageProjectUrl>
+    <Description>Maije brings a certain degree of "magic" to facilitate the development of ASP.NET Core projects.</Description>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
