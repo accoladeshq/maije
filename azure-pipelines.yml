@@ -35,8 +35,20 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
-    arguments: '-c $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) -p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
- 
+    arguments: '-c $(BuildConfiguration) -p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
+
+- task: DotNetCoreCLI@2
+  displayName: Package Library
+  inputs:
+    command: 'pack'
+    packagesToPack: 'src/**/*.csproj'
+    includesymbols: true
+    nobuild: true
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'GitVersion.NuGetVersionV2'
+    outputDir: '$(Build.ArtifactStagingDirectory)'
+    arguments: '-c $(BuildConfiguration)'
+
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifacts
   inputs:
