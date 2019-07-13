@@ -50,6 +50,7 @@ steps:
     publishWebProjects: false
     zipAfterPublish: false
     projects: 'src/**/*.csproj'
+    modifyOutputPath: false
     arguments: '--output $(Build.ArtifactStagingDirectory)'
  
 - task: PublishBuildArtifacts@1
