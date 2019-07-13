@@ -22,7 +22,9 @@ steps:
     version: '2.2.300'
 
 - task: GitVersion@5
-  displayName: Update Version
+  inputs:
+    runtime: 'core'
+    configFilePath: 'GitVersion.yml'
 
 - task: DotNetCoreCLI@2
   displayName: Restore Dependencies
