@@ -36,7 +36,7 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
-    arguments: '-c $(BuildConfiguration) -p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
+    arguments: '-c $(BuildConfiguration) -p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.AssemblySemFileVer) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
 
 - task: DotNetCoreCLI@2
   displayName: Package Library
