@@ -46,6 +46,13 @@ steps:
     arguments: '--configuration $(BuildConfiguration)'
     
 - task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: 'src/**/*.csproj'
+    zipAfterPublish: false
+
+- task: DotNetCoreCLI@2
   displayName: Package Library
   inputs:
     command: 'pack'
