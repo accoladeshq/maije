@@ -51,6 +51,7 @@ steps:
     publishWebProjects: false
     projects: 'src/**/*.csproj'
     zipAfterPublish: false
+    arguments: '--output $(Build.ArtifactStagingDirectory)'
 
 - task: DotNetCoreCLI@2
   displayName: Package Library
