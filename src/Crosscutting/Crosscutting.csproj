@@ -4,6 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Accolades.Maije.Crosscutting</AssemblyName>
     <RootNamespace>Accolades.Maije.Crosscutting</RootNamespace>
+	<Authors>Authfix</Authors>
+    <Company>Accolades SAS</Company>
+    <Product>Maije Framework</Product>
+    <PackageLicenseExpression>GPL-3.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/accoladeshq/maije</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright ©2019 Accolades SAS</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
