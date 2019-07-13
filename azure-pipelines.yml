@@ -34,8 +34,9 @@ steps:
   displayName: Build Library
   inputs:
     command: 'build'
+    configuration: $(BuildConfiguration)
     projects: '**/*.csproj'
-    arguments: '--configuration $(BuildConfiguration) -p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
+    arguments: '-p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
 
 - task: DotNetCoreCLI@2
   displayName: Run tests
@@ -48,6 +49,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
+    nobuild: true
     publishWebProjects: false
     projects: 'src/**/*.csproj'
     zipAfterPublish: false
