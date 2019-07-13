@@ -27,6 +27,7 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: Restore dependencies
   inputs:
+    noCache: true
     command: 'restore'
     projects: '**/*.csproj'
 
@@ -36,6 +37,14 @@ steps:
     command: 'build'
     projects: '**/*.csproj'
     arguments: '-c $(BuildConfiguration) -p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
+
+- task: DotNetCoreCLI@2
+  displayName: Run tests
+  inputs:
+    command: 'test'
+    nobuild: true
+    projects: '**/*.Tests.csproj'
+    arguments: '-c $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
   displayName: Package Library
