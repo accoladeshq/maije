@@ -7,7 +7,7 @@
     <Authors>Authfix</Authors>
     <Company>Accolades SAS</Company>
     <Product>Maije Framework</Product>
-    <PackageLicenseExpression>GPL-3.0</PackageLicenseExpression>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/accoladeshq/maije</RepositoryUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Copyright>Copyright ©2019 Accolades SAS</Copyright>
