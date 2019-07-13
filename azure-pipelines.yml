@@ -35,13 +35,14 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
-    arguments: '-p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
+    arguments: '--configuration $(BuildConfiguration) -p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
 
 - task: DotNetCoreCLI@2
   displayName: Run tests
   inputs:
     command: 'test'
     projects: '**/*.Tests.csproj'
+    arguments: '--configuration $(BuildConfiguration)'
     
 - task: DotNetCoreCLI@2
   displayName: Package Library
@@ -52,6 +53,7 @@ steps:
     includesymbols: true
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.NuGetVersionV2'
+    arguments: '--configuration $(BuildConfiguration)'
  
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifacts
