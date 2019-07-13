@@ -35,7 +35,7 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
-    arguments: '-p:Version=$(GitVersion_AssemblySemVer) -p:FileVersion=$(GitVersion_MajorMinorPatch) -p:InformationalVersion=$(GitVersion_InformationalVersion)'
+    arguments: '-p:Version=$(GitVersion.AssemblySemVer) -p:FileVersion=$(GitVersion.MajorMinorPatch) -p:InformationalVersion=$(GitVersion.InformationalVersion)'
 
 - task: DotNetCoreCLI@2
   displayName: Run tests
