@@ -1,6 +1,7 @@
 ﻿using Accolades.Maije.Crosscutting.Configurations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Accolades.Maije.Distributed.WebApi.Extensions
@@ -14,7 +15,15 @@ namespace Accolades.Maije.Distributed.WebApi.Extensions
         /// <param name="apiConfiguration">The api configuration</param>
         public static void AddMaijeAuthentication(this IServiceCollection services)
         {
-            var configuration = services.BuildServiceProvider().GetRequiredService<IOptions<MaijeConfiguration>>().Value;
+            var serviceProvider = services.BuildServiceProvider();
+
+            var configuration = serviceProvider.GetRequiredService<IOptions<MaijeConfiguration>>().Value;
+
+            if (!configuration.OAuth2Enabled)
+            {
+                serviceProvider.GetService<ILogger<MaijeStartup>>().LogWarning("Authentication is not enabled. Please check your configuration.");
+                return;
+            }
 
             var authConfiguration = configuration.Authentication;
             services.AddAuthentication(options =>
