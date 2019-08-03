@@ -10,6 +10,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -40,6 +41,9 @@ namespace Accolades.Maije.Distributed.WebApi
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
+            // https://github.com/aspnet/Announcements/issues/190
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
@@ -62,6 +66,7 @@ namespace Accolades.Maije.Distributed.WebApi
             services.AddAutoMapper(scanAssemblies);
 
             services.AddMaijeRouteContext();
+            services.AddMaijeUserContext();
             services.AddMaijeGenerics(scanAssemblies);
 
             services.AddScoped<IPaginationDomainService, PaginationDomainService>();
