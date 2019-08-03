@@ -87,6 +87,8 @@ namespace Accolades.Maije.Distributed.WebApi
         {
             var configuration = configurationOptions.Value;
 
+            app.UseCors(b => b.WithOrigins(configuration.Cors.ToArray()).AllowAnyHeader().AllowAnyMethod().WithExposedHeaders("Link", "X-Pagination-Total-Count"));
+
             app.UseAuthentication();
 
             app.UseMvcWithDefaultRoute();
