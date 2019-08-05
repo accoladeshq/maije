@@ -25,7 +25,7 @@ namespace Accolades.Maije.Distributed.Documentation.Extensions
                 if (configuration.OAuth2Enabled)
                 {
                     o.OAuth2RedirectUrl($"{configuration.BaseUrl}/swagger/oauth2-redirect.html");
-                    o.OAuthClientId(configuration.Authentication.FrontOfficeClient.ClientId);
+                    o.OAuthClientId(configuration.Authentication.ClientId);
                 }
 
                 var apiVersionDescriptorProvider = app.ApplicationServices.GetService<IApiVersionDescriptionProvider>();

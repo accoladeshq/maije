@@ -29,8 +29,8 @@ namespace Accolades.Maije.Distributed.WebApi.Extensions
 
                 Dictionary<string, string> claimsToInclude = new Dictionary<string, string>();
 
-                if(configuration.Authentication.FrontOfficeClient.Claims != null)
-                    claimsToInclude = context.HttpContext?.User?.Claims?.Where(c => configuration.Authentication.FrontOfficeClient.Claims.Contains(c.Type)).ToDictionary(c => c.Type, c => c.Value);
+                if(configuration.Authentication.Claims != null)
+                    claimsToInclude = context.HttpContext?.User?.Claims?.Where(c => configuration.Authentication.Claims.Contains(c.Type)).ToDictionary(c => c.Type, c => c.Value);
 
                 return new UserContext(currentUser.Value, claimsToInclude);
             });
