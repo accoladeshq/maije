@@ -68,7 +68,7 @@ namespace Accolades.Maije.Distributed.Documentation.Extensions
             {
                 Type = "oauth2",
                 Flow = authenticationConfiguration.FrontOfficeClient.Flow.ToString().ToLower(),
-                AuthorizationUrl = authenticationConfiguration.AuthorizationUrl,
+                AuthorizationUrl = authenticationConfiguration.AuthorizeUrl,
                 TokenUrl = authenticationConfiguration.TokenUrl,
                 Scopes = authenticationConfiguration.FrontOfficeClient.Scopes
             });

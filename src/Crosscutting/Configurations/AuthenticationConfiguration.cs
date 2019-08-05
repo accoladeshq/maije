@@ -12,12 +12,14 @@ namespace Accolades.Maije.Crosscutting.Configurations
         /// <param name="clientId">The client identifier</param>
         /// <param name="flow">The authentication flow</param>
         /// <param name="scopes">The needed scopes</param>
-        public AuthenticationConfiguration(string authority, string realm, ClientConfiguration frontClient, ClientConfiguration backOfficeClient)
+        public AuthenticationConfiguration(string authority, string authorizeUrl, string tokenUrl, string realm, ClientConfiguration frontClient, ClientConfiguration backOfficeClient)
         {
             Authority = authority;
             Realm = realm;
             FrontOfficeClient = frontClient;
             BackOfficeClient = backOfficeClient;
+            AuthorizeUrl = authorizeUrl;
+            TokenUrl = tokenUrl;
         }
 
         /// <summary>
@@ -38,33 +40,18 @@ namespace Accolades.Maije.Crosscutting.Configurations
         /// </summary>
         [Required]
         public string Authority { get; private set; }
-
-        /// <summary>
-        /// Gets the authentication url
-        /// </summary>
-        public string AuthenticationUrl
-        {
-            get
-            {
-                return new Uri(new Uri(Authority), $"").AbsoluteUri;
-            }
-        }
-
+        
         /// <summary>
         /// Gets the token url
         /// </summary>
-        public string TokenUrl
-        {
-            get { return new Uri(new Uri(AuthenticationUrl), "connect/token").AbsoluteUri; }
-        }
+        [Required]
+        public string TokenUrl { get; private set; }
 
         /// <summary>
         /// Gets the authorization url
         /// </summary>
-        public string AuthorizationUrl
-        {
-            get { return new Uri(new Uri(AuthenticationUrl), "connect/authorize").AbsoluteUri; }
-        }
+        [Required]
+        public string AuthorizeUrl { get; private set; }
 
         /// <summary>
         /// Gets the back office client information
