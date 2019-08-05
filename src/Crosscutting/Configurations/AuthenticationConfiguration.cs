@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Accolades.Maije.Crosscutting.Configurations
@@ -12,14 +13,15 @@ namespace Accolades.Maije.Crosscutting.Configurations
         /// <param name="clientId">The client identifier</param>
         /// <param name="flow">The authentication flow</param>
         /// <param name="scopes">The needed scopes</param>
-        public AuthenticationConfiguration(string authority, string authorizeUrl, string tokenUrl, string realm, ClientConfiguration frontClient, ClientConfiguration backOfficeClient)
+        public AuthenticationConfiguration(string authority, string authorizeUrl, string tokenUrl, string clientId, string audience, Dictionary<string, string> scopes, List<string> claims)
         {
             Authority = authority;
-            Realm = realm;
-            FrontOfficeClient = frontClient;
-            BackOfficeClient = backOfficeClient;
             AuthorizeUrl = authorizeUrl;
             TokenUrl = tokenUrl;
+            ClientId = clientId;
+            Audience = audience;
+            Scopes = scopes ?? new Dictionary<string, string>();
+            Claims = claims ?? new List<string>();
         }
 
         /// <summary>
@@ -31,9 +33,27 @@ namespace Accolades.Maije.Crosscutting.Configurations
         }
 
         /// <summary>
-        /// Gets the authentication realm
+        /// Gets the client identifier
         /// </summary>
-        public string Realm { get; private set; }
+        [Required]
+        public string ClientId { get; private set; }
+
+        /// <summary>
+        /// Gets the api audience
+        /// </summary>
+        [Required]
+        public string Audience { get; private set; }
+
+        /// <summary>
+        /// Gets the needed scopes for the authentication
+        /// </summary>
+        [Required]
+        public Dictionary<string, string> Scopes { get; private set; }
+
+        /// <summary>
+        /// Gets the current user claims to include
+        /// </summary>
+        public List<string> Claims { get; private set; }
 
         /// <summary>
         /// Gets the authentication authority url
@@ -52,15 +72,5 @@ namespace Accolades.Maije.Crosscutting.Configurations
         /// </summary>
         [Required]
         public string AuthorizeUrl { get; private set; }
-
-        /// <summary>
-        /// Gets the back office client information
-        /// </summary>
-        public ClientConfiguration BackOfficeClient { get; private set; }
-
-        /// <summary>
-        /// Gets the front office client configuration
-        /// </summary>
-        public ClientConfiguration FrontOfficeClient { get; private set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Accolades.Maije.Crosscutting.Configurations;
+using Accolades.Maije.Crosscutting.Enums;
 using Accolades.Maije.Distributed.Documentation.Filters;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
@@ -67,15 +68,15 @@ namespace Accolades.Maije.Distributed.Documentation.Extensions
             options.AddSecurityDefinition("Swagger", new OAuth2Scheme
             {
                 Type = "oauth2",
-                Flow = authenticationConfiguration.FrontOfficeClient.Flow.ToString().ToLower(),
+                Flow = OAuth2Flow.Implicit.ToString().ToLower(),
                 AuthorizationUrl = authenticationConfiguration.AuthorizeUrl,
                 TokenUrl = authenticationConfiguration.TokenUrl,
-                Scopes = authenticationConfiguration.FrontOfficeClient.Scopes
+                Scopes = authenticationConfiguration.Scopes
             });
 
             options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
                 {
-                    { "Swagger", authenticationConfiguration.FrontOfficeClient.Scopes?.Select(kvp => kvp.Key )}
+                    { "Swagger", authenticationConfiguration.Scopes?.Select(kvp => kvp.Key )}
                 });
         }
     }
