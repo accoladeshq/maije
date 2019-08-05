@@ -34,7 +34,7 @@ namespace Accolades.Maije.Distributed.WebApi.Extensions
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
             {
                 o.Audience = authConfiguration.FrontOfficeClient.Audience;
-                o.Authority = authConfiguration.AuthenticationUrl;
+                o.Authority = authConfiguration.Authority;
                 o.RequireHttpsMetadata = false;
                 o.TokenValidationParameters.NameClaimType = configuration.NameClaimType;
             });
