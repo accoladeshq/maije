@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Accolades.Maije.Distributed.WebApi;
 
 namespace Accolades.Maije.SampleApi
 {
@@ -12,16 +11,10 @@ namespace Accolades.Maije.SampleApi
         /// The application main entry points
         /// </summary>
         /// <param name="args">The application arguments</param>
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var maijeApp = new MaijeApp<Startup>(args);
+            return maijeApp.Start();
         }
-
-        /// <summary>
-        /// Create a default <see cref="IWebHostBuilder"/>
-        /// </summary>
-        /// <param name="args">The application arguments</param>
-        /// <returns></returns>
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
     }
 }
