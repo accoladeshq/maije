@@ -20,8 +20,12 @@ namespace Accolades.Maije.Distributed.WebApi
             Configuration = GetAppConfiguration();
 
             WebHostBuilder = WebHost.CreateDefaultBuilder(args)
-                .UseStartup<MaijeStartup>()
+                .UseStartup<TStartup>()
                 .UseSerilog();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
         }
 
         /// <summary>
@@ -40,27 +44,25 @@ namespace Accolades.Maije.Distributed.WebApi
         /// <returns></returns>
         public int Start()
         {
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(Configuration)
-                .CreateLogger();
+            int exitCode = 0;
 
             try
             {
                 var webHost = WebHostBuilder.Build();
                 webHost.Run();
-
-                return 0;
             }
             catch (Exception ex)
             {
-                Log.ForContext<MaijeApp<TStartup>>().Fatal(ex, "Host terminated unexpectedly");
+                Log.ForContext<TStartup>().Fatal(ex, ex.Message);
 
-                return -1;
+                exitCode = -1;
             }
             finally
             {
                 Log.CloseAndFlush();
             }
+
+            return exitCode;
         }
 
         /// <summary>
@@ -73,7 +75,7 @@ namespace Accolades.Maije.Distributed.WebApi
             // Actually, before ASP.NET bootstrap, we must rely on environment variable to get environment name
             // https://docs.microsoft.com/fr-fr/aspnet/core/fundamentals/environments?view=aspnetcore-2.2
             // Pay attention to casing for Linux environment. By default it's pascal case.
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
 
             return new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
