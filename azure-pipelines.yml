@@ -27,6 +27,7 @@ steps:
     configFilePath: 'GitVersion.yml'
 
 - task: VisualStudioTestPlatformInstaller@1
+  displayName: Install Lastest Test Platform
   inputs:
     packageFeedSelector: 'nugetOrg'
     versionSelector: 'latestStable'
