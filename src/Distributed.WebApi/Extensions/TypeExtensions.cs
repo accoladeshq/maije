@@ -58,14 +58,34 @@ namespace Accolades.Maije.Distributed.WebApi.Extensions
             var openRepositoryInterfaceType = typeof(IMaijeRepository<,>);
             var repositoryInterfaceType = openRepositoryInterfaceType.MakeGenericType(entity, identifier);
 
-            Type openRepositoryImplementationType = null;
+            var existingRepositoryClasses = types.Where(t => repositoryInterfaceType.IsAssignableFrom(t));
 
-            if(entity.GetInterface(typeof(IDeactivatable).Name) != null)
-                openRepositoryImplementationType = typeof(DeactivatableMaijeRepository<,>);
+            var existingRepositoryInterfaceType = existingRepositoryClasses.FirstOrDefault(t => t.IsInterface);
+
+            if(existingRepositoryInterfaceType != null)
+            {
+                repositoryInterfaceType = existingRepositoryInterfaceType;
+            }
+
+            Type repositoryImplementationType = null;
+
+            var existingRepositoryImplementation = existingRepositoryClasses.FirstOrDefault(t => !t.IsInterface);
+
+            if(existingRepositoryImplementation != null)
+            {
+                repositoryImplementationType = existingRepositoryImplementation;
+            }
             else
-                openRepositoryImplementationType = typeof(MaijeRepository<,>);
+            {
+                Type openRepositoryImplementationType = null;
 
-            var repositoryImplementationType = openRepositoryImplementationType.MakeGenericType(entity, identifier);
+                if (entity.GetInterface(typeof(IDeactivatable).Name) != null)
+                    openRepositoryImplementationType = typeof(DeactivatableMaijeRepository<,>);
+                else
+                    openRepositoryImplementationType = typeof(MaijeRepository<,>);
+
+                repositoryImplementationType = openRepositoryImplementationType.MakeGenericType(entity, identifier);
+            }
 
             requiredServices.Add(repositoryInterfaceType, repositoryImplementationType);
             requiredServices.Add(typeof(IMaijeRepository), repositoryImplementationType);
