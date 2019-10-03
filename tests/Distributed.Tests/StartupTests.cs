@@ -2,6 +2,7 @@ using Accolades.Maije.AppService;
 using Accolades.Maije.Distributed.Tests.Mocks;
 using Accolades.Maije.Distributed.Tests.Mocks.Dto;
 using Accolades.Maije.Distributed.Tests.Mocks.Entities;
+using Accolades.Maije.Distributed.Tests.Mocks.Repositories;
 using Accolades.Maije.Domain.Contracts;
 using Accolades.Maije.Infrastructure;
 using FluentAssertions;
@@ -25,6 +26,38 @@ namespace Accolades.Maije.Distributed.Tests
 
             repositoryBase.Should().NotBeNull();
             repositoryBase.Should().BeOfType<MaijeRepository<ValueTest, int>>();
+        }
+
+        [TestMethod]
+        public void Should_RetrieveCustomRepository_When_BoostrapWithoutInterface()
+        {
+            var serviceProvider = GetDefaultServiceProvider();
+
+            var customRepository = serviceProvider.GetService<IMaijeRepository<Category, Guid>>();
+
+            customRepository.Should().NotBeNull();
+            customRepository.Should().BeOfType<CategoryRepository>();
+        }
+
+        [TestMethod]
+        public void Should_RetrieveCustomRepository_When_BoostrapWithInterface()
+        {
+            var serviceProvider = GetDefaultServiceProvider();
+
+            var customRepository = serviceProvider.GetService<IPostRepository>();
+
+            customRepository.Should().NotBeNull();
+            customRepository.Should().BeOfType<PostRepository>();
+        }
+
+        [TestMethod]
+        public void Should_NotRetrieveGenericRepository_When_BoostrapWithInterface()
+        {
+            var serviceProvider = GetDefaultServiceProvider();
+
+            var customRepository = serviceProvider.GetService<IMaijeRepository<Post, string>>();
+
+            customRepository.Should().BeNull();
         }
 
         [TestMethod]
