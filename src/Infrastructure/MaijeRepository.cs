@@ -108,13 +108,18 @@ namespace Accolades.Maije.Infrastructure
         {
             _paginationDomainService.ValidatePagination(paginationRequest);
 
-            var paginatedQuery = GetPaginationQuery(paginationRequest);
+            var paginatedQuery = DbSet.AsNoTracking();
+
+            var totalItemsCount = paginatedQuery.Count();
+
+            paginatedQuery = paginatedQuery.AddPagination(paginationRequest);
+            paginatedQuery = UpdatePaginationQuery(paginatedQuery);
 
             var items = await paginatedQuery.ToListAsync().ConfigureAwait(false);
 
-            var links = _paginationDomainService.GetCurrentRequestPaginationLinks(paginationRequest.Offset, paginationRequest.Limit, items.Count);
+            var links = _paginationDomainService.GetCurrentRequestPaginationLinks(paginationRequest.Offset, paginationRequest.Limit, totalItemsCount);
 
-            return new PaginationResult<TEntity>(items, paginationRequest.Offset, items.Count, paginationRequest.Limit, links);
+            return new PaginationResult<TEntity>(items, paginationRequest.Offset, totalItemsCount, paginationRequest.Limit, links);
         }
 
         /// <summary>
@@ -148,13 +153,9 @@ namespace Accolades.Maije.Infrastructure
         /// </summary>
         /// <param name="paginationRequest">The pagination request</param>
         /// <returns></returns>
-        protected virtual IQueryable<TEntity> GetPaginationQuery(PaginationRequest paginationRequest)
+        protected virtual IQueryable<TEntity> UpdatePaginationQuery(IQueryable<TEntity> originalQuery)
         {
-            IQueryable<TEntity> query = DbSet.AsNoTracking();
-
-            query = query.OrderBy(paginationRequest.Order).Skip(paginationRequest.Offset).Take(paginationRequest.Limit);
-
-            return query;
+            return originalQuery;
         }
 
         /// <summary>

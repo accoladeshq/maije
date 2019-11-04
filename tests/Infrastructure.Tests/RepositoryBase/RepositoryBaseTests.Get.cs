@@ -45,9 +45,10 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            var paginationResult = await repository.GetPaginatedAsync(new PaginationRequest(0, 10, GetDefaultAscendingOrder(), string.Empty));
+            var paginationResult = await repository.GetPaginatedAsync(new PaginationRequest(0, 6, GetDefaultAscendingOrder(), string.Empty));
 
             paginationResult.Items.Should().BeInAscendingOrder(i => i.Id);
+            paginationResult.Items.Should().HaveCount(6);
         }
 
         [TestMethod]
@@ -55,9 +56,10 @@ namespace Accolades.Maije.Infrastructure.Tests
         {
             var repository = GetDefaultRepository();
 
-            var paginationResult = await repository.GetPaginatedAsync(new PaginationRequest(0, 10, GetDefaultDescendingOrder(), string.Empty));
+            var paginationResult = await repository.GetPaginatedAsync(new PaginationRequest(0, 4, GetDefaultDescendingOrder(), string.Empty));
 
             paginationResult.Items.Should().BeInDescendingOrder(i => i.Id);
+            paginationResult.Items.Should().HaveCount(4);
         }
 
         [TestMethod]

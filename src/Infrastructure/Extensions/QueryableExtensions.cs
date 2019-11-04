@@ -8,6 +8,18 @@ namespace Accolades.Maije.Infrastructure.Extensions
     public static partial class QueryableExtensions
     {
         /// <summary>
+        /// Add pagination parameters to query
+        /// </summary>
+        /// <typeparam name="T">The entity type</typeparam>
+        /// <param name="source">The source query</param>
+        /// <param name="paginationRequest">The pagination request</param>
+        /// <returns>The request with pagination parameters</returns>
+        public static IQueryable<T> AddPagination<T>(this IQueryable<T> source, PaginationRequest paginationRequest)
+        {
+            return source.OrderBy(paginationRequest.Order).Skip(paginationRequest.Offset).Take(paginationRequest.Limit);
+        }
+
+        /// <summary>
         /// Apply ordering to query
         /// </summary>
         /// <typeparam name="T">The entity type</typeparam>
