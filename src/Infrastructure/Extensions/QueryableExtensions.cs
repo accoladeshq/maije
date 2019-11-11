@@ -16,7 +16,7 @@ namespace Accolades.Maije.Infrastructure.Extensions
         /// <returns>The request with pagination parameters</returns>
         public static IQueryable<T> AddPagination<T>(this IQueryable<T> source, PaginationRequest paginationRequest)
         {
-            return source.OrderBy(paginationRequest.Order).Skip(paginationRequest.Offset).Take(paginationRequest.Limit);
+            return source.Skip(paginationRequest.Offset).Take(paginationRequest.Limit);
         }
 
         /// <summary>

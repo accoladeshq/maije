@@ -108,7 +108,7 @@ namespace Accolades.Maije.Infrastructure
         {
             _paginationDomainService.ValidatePagination(paginationRequest);
 
-            var paginatedQuery = DbSet.AsNoTracking();
+            var paginatedQuery = GetItemsQuery(false, paginationRequest.Order);
 
             var totalItemsCount = paginatedQuery.Count();
 
